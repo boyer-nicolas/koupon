@@ -1,0 +1,17 @@
+{
+    "name": "niwee/php",
+    "autoload": {
+        "psr-4": {
+            "Niwee\\Php\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nicolas Boyer",
+            "email": "nicolas@niwee.fr"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.2"
+    }
+}

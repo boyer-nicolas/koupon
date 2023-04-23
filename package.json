@@ -1,0 +1,11 @@
+{
+  "name": "agency",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:niwee-productions/infrastructures/php.git",
+  "author": "Nicolas Boyer <nicolas@niwee.fr>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "code app && docker compose up"
+  }
+}

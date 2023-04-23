@@ -1,0 +1,44 @@
+{$URL}/api/* {
+    root * {$ROOT_DIR}{$SERVER_INDEX}
+
+    @forbidden {
+        path    /.htaccess
+        path    /data/*
+        path    /config/*
+        path    /db_structure
+        path    /.xml
+        path    /README
+        path    /3rdparty/*
+        path    /lib/*
+        path    /templates/*
+        path    /occ
+        path    /console.php
+        path /xmlrpc.php
+        path *.sql
+    }
+
+    encode gzip
+
+    php_fastcgi {$FPM}:9000 {
+        env front_controller_active true
+    }
+
+    file_server
+
+    try_files {path} {path}/index.php
+
+    respond @forbidden 403
+
+    log {
+       level ERROR
+    }
+}
+
+{$URL} {
+    reverse_proxy node:3000
+}
+
+
+mail.{$URL} {
+	reverse_proxy maildev:80
+}
