@@ -59,7 +59,8 @@ final class Auth
         }
         catch (\Exception $e)
         {
-            return $this->response->sendUnauthorized();
+            $this->response->sendUnauthorized();
+            return false;
         }
     }
 

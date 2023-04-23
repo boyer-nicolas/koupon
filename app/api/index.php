@@ -28,17 +28,32 @@ class Index
 
         $this->engine->set404(function ()
         {
-            $this->response->sendNotFound('Page not found!');
+            $this->response->sendNotFound();
         });
 
-        $this->engine->mount('/api', function ()
+        $this->engine->mount('/api/v1', function ()
         {
-            $this->auth = new \Koupon\Model\Auth();
-            $this->auth->isAuthenticated();
 
-            $this->engine->get('/', function ()
+            $this->engine->mount('/', function ()
             {
-                $this->response->sendMessage('Welcome to Koupon API!');
+                $this->auth = new \Koupon\Model\Auth();
+                if (!$this->auth->isAuthenticated())
+                {
+                    $this->engine->mount('/auth', function ()
+                    {
+                        $this->engine->get('/login', function ()
+                        {
+                            $this->response->sendMessage('Welcome to Koupon API!');
+                        });
+                    });
+                }
+                else
+                {
+                    $this->engine->get('/', function ()
+                    {
+                        $this->response->sendMessage('Welcome to Koupon API!');
+                    });
+                }
             });
         });
 
