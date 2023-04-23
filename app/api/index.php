@@ -4,12 +4,16 @@ namespace Koupon\Model;
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Symfony\Component\Dotenv\Dotenv;
 
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
 $whoops->register();
 
-define('APP_ROOT', dirname(__DIR__));
+define('APP_ROOT', __DIR__);
+
+$dotenv = new Dotenv();
+$dotenv->load(APP_ROOT . '/.env');
 
 class Index
 {
