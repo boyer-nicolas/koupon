@@ -1,46 +1,30 @@
-# PHP INFRASTRUCTURE BY NIWEE
+# KOUPON
+
+## Description
+
+This project aims to be a coupon management system in which coupon conditions can be tested. It uses a NextJS frontend, a PHP OOP API and a MongoDB database.
 
 ## Requirements
 
-### Folder structure
+- Docker
+- Docker Compose
+- PHP 8.1
+- Composer
+- NodeJS 18
 
-⚠️ An `app` folder is required and it <b>must be a Git repository</b> ! ⚠️
+## Getting Started
 
-```
-app/
-├── sql/
-├── index.php
-```
-
-### Getting started example
-The following commands will clone this repository, create a new `app` folder and install the PHP infrastructure.
-Environment file generation is included
+Everything is automated for your convinience. Just run the following commands and you are good to go.
 
 ```bash
-git clone git@gitlab.com:niwee-productions/infrastructures/php.git <projectname>
-cd <projectname>
-git clone <myproject> app/
 ./cli.sh gen:env
-docker compose up
+docker-compose up
 ```
 
-### Commands
+## Automations
 
-##### With the niwee package, you can use the following command instead of `php.sh`
+A cli tool is provided to generate the .env file, to do so run the following command.
 
 ```bash
-lnc
+./cli.sh gen:env
 ```
-
-#### SQL Dump
-
-```bash
-./php.sh db dump
-```
-
-#### SQL Import
-
-```bash
-./php.sh db import
-```
-# KOUPON
