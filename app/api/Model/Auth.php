@@ -13,25 +13,24 @@ final class Auth
     private $issuedAt;
     private $expire;
     private $serverName;
-    private $jwtData;
+    private $payload;
     private $filters;
     private $jwt;
     private $response;
 
     public function __construct()
     {
-
         $this->filters   = new Filters();
-        $this->secretKey  = $_ENV['APP_SECRET'];
+        $this->secretKey  = $_ENV['APP_SECRET'] || throw new \Exception('APP_SECRET not found in .env file');
         $this->issuedAt   = new \DateTimeImmutable();
         $this->expire     = $this->issuedAt->modify('+6 minutes')->getTimestamp();
-        $this->serverName = $_ENV['APP_URL'];
+        $this->serverName = $_ENV['APP_URL'] || throw new \Exception('APP_URL not found in .env file');
         $this->response  = new Response();
 
-        $this->jwtData = [
+        $this->payload = [
+            'userid'  => 0,
+            'name'  => $this->serverName,
             'iat'  => $this->issuedAt->getTimestamp(),
-            'iss'  => $this->serverName,
-            'nbf'  => $this->issuedAt->getTimestamp(),
             'exp'  => $this->expire,
         ];
     }
@@ -39,9 +38,9 @@ final class Auth
     public function generateJWT(): string
     {
         return JWT::encode(
-            $this->jwtData,
+            $this->payload,
             $this->secretKey,
-            'HS512'
+            'HS256'
         );
     }
 
@@ -86,9 +85,7 @@ final class Auth
         elseif (function_exists('apache_request_headers'))
         {
             $requestHeaders = apache_request_headers();
-            // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
             $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
-            //print_r($requestHeaders);
             if (isset($requestHeaders['Authorization']))
             {
                 $headers = trim($requestHeaders['Authorization']);

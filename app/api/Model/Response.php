@@ -77,10 +77,19 @@ final class Response
      *
      * @return [type]
      */
-    public function sendUnauthorized(string $message = 'Unauthorized', int $code = 401)
+    public function sendUnauthorized(string $message = 'Unauthorized, please check your Authorization token.', int $code = 401)
     {
         http_response_code($code);
-        $this->send(['error' => $message]);
+        // Look for bearer token in header
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization']))
+        {
+            $this->send(['error' => $message]);
+        }
+        else
+        {
+            $this->send(['error' => $message, 'hint' => 'Did you forget to include the Authorization header?']);
+        }
     }
 
     /**

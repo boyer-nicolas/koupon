@@ -31,30 +31,20 @@ class Index
             $this->response->sendNotFound();
         });
 
-        $this->engine->mount('/api/v1', function ()
-        {
 
-            $this->engine->mount('/', function ()
+        $this->auth = new \Koupon\Model\Auth();
+
+        $this->engine->before('GET|POST|PUT|DELETE', '/.*', function ()
+        {
+            if (!$this->auth->isAuthenticated())
             {
-                $this->auth = new \Koupon\Model\Auth();
-                if (!$this->auth->isAuthenticated())
-                {
-                    $this->engine->mount('/auth', function ()
-                    {
-                        $this->engine->get('/login', function ()
-                        {
-                            $this->response->sendMessage('Welcome to Koupon API!');
-                        });
-                    });
-                }
-                else
-                {
-                    $this->engine->get('/', function ()
-                    {
-                        $this->response->sendMessage('Welcome to Koupon API!');
-                    });
-                }
-            });
+                $this->response->sendUnauthorized();
+            }
+        });
+
+        $this->engine->get('/', function ()
+        {
+            $this->response->sendMessage('Welcome to Koupon API!');
         });
 
         $this->engine->run();
