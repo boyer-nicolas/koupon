@@ -21,5 +21,8 @@
     },
     "scripts": {
         "gen:jwt": "php bin/generate-jwt.php"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
     }
 }

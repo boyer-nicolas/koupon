@@ -6,6 +6,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Koupon\Model\Filters;
 use Koupon\Model\Response;
+use Koupon\Model\Config;
 
 final class Auth
 {
@@ -17,14 +18,16 @@ final class Auth
     private $filters;
     private $jwt;
     private $response;
+    private $config;
 
     public function __construct()
     {
+        $this->config = new Config();
         $this->filters   = new Filters();
-        $this->secretKey  = $_ENV['APP_SECRET'] || throw new \Exception('APP_SECRET not found in .env file');
+        $this->secretKey  = $this->config->get('APP_SECRET');
         $this->issuedAt   = new \DateTimeImmutable();
         $this->expire     = $this->issuedAt->modify('+6 minutes')->getTimestamp();
-        $this->serverName = $_ENV['APP_URL'] || throw new \Exception('APP_URL not found in .env file');
+        $this->serverName = $this->config->get('APP_URl');
         $this->response  = new Response();
 
         $this->payload = [
@@ -35,25 +38,50 @@ final class Auth
         ];
     }
 
+    /**
+     * @return string
+     */
     public function generateJWT(): string
     {
+        $secret_Key  = $this->secretKey;
+        $date   = new \DateTimeImmutable();
+        $expire_at     = $date->modify('+6 minutes')->getTimestamp();      // Add 60 seconds
+        $domainName = "app.localhost";
+        $username   = "username";                                           // Retrieved from filtered POST data
+        $request_data = [
+            'iat'  => $date->getTimestamp(),         // Issued at: time when the token was generated
+            'iss'  => $domainName,                       // Issuer
+            'nbf'  => $date->getTimestamp(),         // Not before
+            'exp'  => $expire_at,                           // Expire
+            'userName' => $username,                     // User name
+        ];
         return JWT::encode(
-            $this->payload,
-            $this->secretKey,
-            'HS256'
+            $request_data,
+            $secret_Key,
+            'HS512'
         );
     }
 
+    /**
+     * @param string $jwt
+     * 
+     * @return [type]
+     */
     public function setJWT(string $jwt)
     {
         $this->jwt = $jwt;
     }
 
+    /**
+     * @param string $jwt
+     * 
+     * @return [type]
+     */
     public function decode(string $jwt)
     {
         try
         {
-            JWT::decode($jwt, $this->secretKey, ['HS512']);
+            JWT::decode($jwt, new Key($this->secretKey, 'HS512'));
             return true;
         }
         catch (\Exception $e)
@@ -63,6 +91,9 @@ final class Auth
         }
     }
 
+    /**
+     * @return [type]
+     */
     public function isAuthenticated()
     {
         return $this->decode($this->getJWT());
@@ -71,6 +102,9 @@ final class Auth
     /** 
      * Get header Authorization
      * */
+    /**
+     * @return [type]
+     */
     private function getAuthorizationHeader()
     {
         $headers = null;
@@ -96,7 +130,8 @@ final class Auth
 
     /**
      * get access token from header
-     * */
+     * @return [type]
+     */
     private function getJWT()
     {
         $headers = $this->getAuthorizationHeader();
