@@ -1,5 +1,5 @@
 import './assets/styles/app.scss'
-import Footer from './components/Footer'
+import Footer from './Components/Footer'
 import Drawer from './Components/Drawer'
 import Navbar from './Components/Navbar'
 import { Toaster } from 'react-hot-toast'
