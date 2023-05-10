@@ -32,6 +32,10 @@ export default class Cart {
     Cookies.set("cart", JSON.stringify(this.cart));
   }
 
+  getContents() {
+    return this.cart.items;
+  }
+
   load() {
     // load cart from localstorage
     Cookies.get("cart") || this.init();

@@ -19,6 +19,11 @@ export default function ProductCard({ product, ...props })
         <div className={classname("card shadow-xl", props.className)} style={props.style}>
             <figure>
                 <Image width={400} height={200} src={product.image} alt="Shoes" className="w-full" />
+                <span className="text-xl font-bold badge badge-primary text-white py-5 absolute right-3 top-3">
+                    {product.currency === "USD" && "$"}
+                    {product.price}
+                    {product.currency === "EUR" && "€"}
+                </span>
             </figure>
             <div className="card-body">
                 <div className="card-actions justify-start">
@@ -35,18 +40,10 @@ export default function ProductCard({ product, ...props })
                 <p>
                     {product.description}
                 </p>
-                <div className="card-actions w-full mt-5 justify-between items-center">
-                    <div className="card-actions">
-                        <span className="text-2xl font-bold">
-                            {product.currency === "USD" && "$"}
-                            {product.price}
-                            {product.currency === "EUR" && "€"}
-                        </span>
-                    </div>
-                    <div className="card-actions flex justify-end flex-nowrap">
-                        <Link href={product.link} className="btn btn-shadow">View Details</Link>
-                        <AddToCartBtn product={product} />
-                    </div>
+                <hr />
+                <div className="card-actions w-full mt-3 justify-center items-center">
+                    <Link href={product.link} className="btn">View Details</Link>
+                    <AddToCartBtn product={product} />
                 </div>
             </div>
         </div>

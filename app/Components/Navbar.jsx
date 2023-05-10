@@ -1,29 +1,39 @@
 import Link from 'next/link'
 import NavItems from './NavItems';
+import ExtraNav from './ExtraNav';
 import Image from 'next/image';
 import ProfilePic from "../assets/images/profile.png"
 import Cart from "../Model/Cart"
+import Theme from './Theme';
 
 export default function Navbar()
 {
+    console.log("Navbar");
     const cart = new Cart();
+    console.log(cart.count());
 
     return (
-        <div className="w-full navbar bg-base-100">
+        <div className="w-full navbar bg-base-100 container mx-auto">
             <div className="flex-none lg:hidden">
                 <label htmlFor="app-drawer" className="btn btn-square btn-ghost">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </label>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 lg:flex-none">
                 <Link href="/" className="btn btn-ghost normal-case text-xl">Koupon</Link>
             </div>
-            <div className="flex-none hidden lg:block">
+            <div className="flex-1 hidden lg:block">
                 <ul className="menu menu-horizontal px-1">
                     <NavItems />
                 </ul>
             </div>
             <div className="flex-none">
+                <ul className="menu menu-horizontal px-1 hidden lg:flex">
+                    <ExtraNav />
+                    <li className='hidden lg:block ml-5'>
+                        <Theme />
+                    </li>
+                </ul>
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle">
                         <div className="indicator">

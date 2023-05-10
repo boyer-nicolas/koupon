@@ -15,7 +15,9 @@ export default function RootLayout({ children })
       <body>
         <Drawer>
           <Navbar />
-          {children}
+          <main id="koupon">
+            {children}
+          </main>
           <Footer />
           <Toaster
             position="top-center"

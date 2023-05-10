@@ -35,16 +35,6 @@ export default class Theme extends React.Component
             Cookies.get('theme') === "dracula" ? this.setState({ theme: "light" }) : this.setState({ theme: "dark" });
         }
         document.querySelector('html').setAttribute('data-theme', theme);
-
-        // Close drawer on navlink click
-        const navLinks = document.querySelectorAll('.menu a');
-        navLinks.forEach((navLink) =>
-        {
-            navLink.addEventListener('click', () =>
-            {
-                document.getElementById('app-drawer').checked = false;
-            });
-        });
     }
 
 

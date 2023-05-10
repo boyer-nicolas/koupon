@@ -16,6 +16,47 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dracula"],
+    themes: [
+      {
+        light: {
+          primary: "#3b82f6",
+
+          secondary: "#38bdf8",
+
+          accent: "#a855f7",
+
+          neutral: "#3D4451",
+
+          "base-100": "#FFFFFF",
+
+          info: "#3ABFF8",
+
+          success: "#36D399",
+
+          warning: "#FBBD23",
+
+          error: "#F87272",
+        },
+        dracula: {
+          primary: "#3b82f6",
+
+          secondary: "#38bdf8",
+
+          accent: "#a855f7",
+
+          neutral: "#3D4451",
+
+          "base-100": "#131313",
+
+          info: "#3ABFF8",
+
+          success: "#36D399",
+
+          warning: "#FBBD23",
+
+          error: "#F87272",
+        },
+      },
+    ],
   },
 };
