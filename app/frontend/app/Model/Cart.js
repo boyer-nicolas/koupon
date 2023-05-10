@@ -12,6 +12,7 @@ export default class Cart {
   }
 
   clear() {
+    console.log("Clearing cart");
     this.cart = {
       total: 0,
       items: [],
@@ -24,7 +25,7 @@ export default class Cart {
     Cookies.set("cart", JSON.stringify(this.cart));
     console.log("Cart saved");
     console.log(this.cart);
-    console.table(this.cart.items);
+    console.dir(this.cart.items);
   }
 
   init() {
@@ -71,24 +72,30 @@ export default class Cart {
           }
           return i;
         });
-        console.log("Item already in cart");
-        let itemPrice = parseFloat(item.item.price);
-        itemPrice = itemPrice * item.item.quantity;
-        console.log(itemPrice);
+
+        const itemPrice = parseFloat(item.item.price);
         this.cart.total = parseFloat(this.cart.total) + parseFloat(itemPrice);
       } else {
-        item.item.quantity = 1;
-        this.cart.items.push(item);
+        const itemToAdd = {
+          item: item.item,
+          quantity: 1,
+          price: item.item.price,
+        };
+
+        this.cart.items.push(itemToAdd);
         this.cart.total =
-          parseFloat(this.cart.total) + parseFloat(item.item.price);
+          parseFloat(this.cart.total) + parseFloat(itemToAdd.price);
       }
 
       this.save();
-      resolve();
+      setTimeout(() => {
+        resolve();
+      }, 700);
     });
   }
 
   count() {
+    console.log(this.cart.items.length);
     return this.cart.items.length;
   }
 }

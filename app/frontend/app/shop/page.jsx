@@ -1,4 +1,5 @@
 import ProductCard from "../Components/shop/ProductCard";
+import ClearCart from "../Components/shop/ClearCart";
 
 export default function Shop()
 {
@@ -165,6 +166,8 @@ export default function Shop()
             <div className="mx-auto">
                 <div className="flex items-center justify-between mb-5">
                     <h2 className="font-bold text-xl">All products</h2>
+                    {/* For quick development purposes */}
+                    <ClearCart />
                     <form>
                         <select className="select w-full max-w-xs outline outline-2 outline-gray-200">
                             <option disabled defaultValue>Sort by</option>

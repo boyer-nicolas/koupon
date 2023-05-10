@@ -2,7 +2,7 @@
 import React from 'react';
 import Cart from "../../Model/Cart";
 import { BiCartAdd, BiCheck, BiErrorCircle } from "react-icons/bi";
-
+import toast from 'react-hot-toast';
 export default class AddToCartBtn extends React.Component
 {
     constructor(props)
@@ -30,21 +30,23 @@ export default class AddToCartBtn extends React.Component
     addToCart()
     {
         this.setState({ btnContents: "Adding", btnClass: "btn-disabled loading", btnIcon: null });
-        setTimeout(() =>
+        const addToCart = () => this.cart.add({ item: this.product }).then(() =>
         {
-            this.cart.add({ item: this.product }).then(() =>
-            {
-                this.setState({ btnContents: "Added!", btnClass: "btn-success", btnIcon: <BiCheck size={24} /> });
-                setTimeout(() => this.setState({ btnContents: "Add to Cart", btnClass: "btn-primary", btnIcon: <BiCartAdd size={24} /> }), 2000);
-            }
-            ).catch((error) =>
-            {
-                console.error(error);
-                this.setState({ btnContents: "Error", btnClass: "btn-error" });
-                setTimeout(() => this.setState({ btnContents: "Add to Cart", btnClass: "btn-primary", btnIcon: <BiErrorCircle size={24} /> }), 2000);
-            }
-            );
-        }, 500);
+            this.setState({ btnContents: "Added!", btnClass: "btn-success", btnIcon: <BiCheck size={24} /> });
+            setTimeout(() => this.setState({ btnContents: "Add to Cart", btnClass: "btn-primary", btnIcon: <BiCartAdd size={24} /> }), 2000);
+        }
+        ).catch((error) =>
+        {
+            console.error(error);
+            this.setState({ btnContents: "Error", btnClass: "btn-error" });
+            setTimeout(() => this.setState({ btnContents: "Add to Cart", btnClass: "btn-primary", btnIcon: <BiErrorCircle size={24} /> }), 2000);
+        }
+        );
+        toast.promise(addToCart(), {
+            loading: 'Adding to cart...',
+            success: <b>Added to cart!</b>,
+            error: <b>Could not add to cart.</b>,
+        });
     }
 
     render()
