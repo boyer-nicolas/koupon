@@ -4,6 +4,7 @@ CHANGELOG
 [2023-05-10]
 
 [2023-05-01]
+ * 💡feat(#tests): Implemented vitest + shop test & toasts
  * 💡feat(#content): Added cart/shop pages + cart/coupon methods
  * 🪚 refactor(#nextjs): Switched to new app directory && added sass preprocessoer
 

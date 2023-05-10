@@ -1,11 +1,33 @@
 {
-  "name": "agency",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@gitlab.com:niwee-productions/infrastructures/php.git",
-  "author": "Nicolas Boyer <nicolas@niwee.fr>",
-  "license": "MIT",
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "code app && docker compose up"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "autoprefixer": "10.4.14",
+    "classnames": "^2.3.2",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.4",
+    "next": "13.3.4",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.8.0",
+    "tailwindcss": "3.3.2"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "daisyui": "^2.51.6",
+    "js-cookie": "^3.0.5",
+    "sass": "^1.62.1",
+    "vitest": "^0.31.0"
   }
 }
