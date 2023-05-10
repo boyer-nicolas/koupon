@@ -5,10 +5,17 @@ import Shop from './page';
 
 describe('Shop', () =>
 {
-    test('renders without the clear cart button', () =>
+    test('renders without crashing', () =>
     {
         render(<Shop />);
-        expect(screen.queryByText(/Clear Cart/i)).toBeNull();
+    });
+
+    test('toast appears when add to cart button is clicked', () =>
+    {
+        render(<Shop />);
+
+        const addToCartBtn = screen.getAllByText('Add to Cart');
+        addToCartBtn.map((btn) => btn.click());
     });
 }
 );

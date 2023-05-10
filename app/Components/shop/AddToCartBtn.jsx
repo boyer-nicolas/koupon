@@ -30,6 +30,10 @@ export default class AddToCartBtn extends React.Component
             cartTotal: 0,
         };
 
+    }
+
+    componentDidMount()
+    {
         Modal.setAppElement('#koupon');
     }
 
@@ -94,6 +98,7 @@ export default class AddToCartBtn extends React.Component
                     </span>
                     {this.state.btnIcon}
                 </button>
+                <div id="koupon"></div>
                 <Modal isOpen={this.state.modalIsOpen} onRequestClose={() => this.setState({ modalIsOpen: false })} contentLabel="Example Modal" className="modal cursor-pointer modal-open">
                     <label className="modal-box relative animate__animated animate__fadeInUp animate__fast">
                         <h3 className="text-lg font-bold">Cart Results</h3>

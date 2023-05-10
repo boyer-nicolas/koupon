@@ -4,6 +4,7 @@ CHANGELOG
 [2023-05-10]
 
 [2023-05-01]
+ * 💡feat(#layout): Fixed footer folder location
  * 💡feat(#addToCart): Added modal upon cart addition for UX & betdebugging
  * 💡feat(#hooks): Added build & test on post commit
  * 🪚 refactor(#backend): Removed from this repo to separate and use next w/vercel + php w/deployer

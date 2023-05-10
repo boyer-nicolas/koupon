@@ -21,7 +21,7 @@ export default class Theme extends React.Component
         {
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
             {
-                Cookies.set('theme', 'dracula');
+                Cookies.set('theme', 'dark');
                 this.setState({ theme: "light" });
             }
             else
@@ -32,7 +32,7 @@ export default class Theme extends React.Component
         }
         else
         {
-            Cookies.get('theme') === "dracula" ? this.setState({ theme: "light" }) : this.setState({ theme: "dark" });
+            Cookies.get('theme') === "dark" ? this.setState({ theme: "light" }) : this.setState({ theme: "dark" });
         }
         document.querySelector('html').setAttribute('data-theme', theme);
     }
@@ -40,13 +40,13 @@ export default class Theme extends React.Component
 
     handleThemeChange()
     {
-        let availableThemes = ["light", "dracula"];
+        let availableThemes = ["light", "dark"];
         let currentTheme = document.querySelector('html').getAttribute('data-theme');
         let nextTheme = availableThemes[(availableThemes.indexOf(currentTheme) + 1) % availableThemes.length];
 
         Cookies.set('theme', nextTheme);
 
-        this.setState({ theme: nextTheme === "dracula" ? "light" : "dark" });
+        this.setState({ theme: nextTheme === "dark" ? "light" : "dark" });
 
         document.querySelector('html').setAttribute('data-theme', nextTheme);
     }

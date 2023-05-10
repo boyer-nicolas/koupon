@@ -37,7 +37,7 @@ module.exports = {
 
           error: "#F87272",
         },
-        dracula: {
+        dark: {
           primary: "#3b82f6",
 
           secondary: "#38bdf8",
