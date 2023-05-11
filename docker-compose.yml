@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  app:
+  api:
     image: "registry.byniwee.cloud/php:${PHP_VERSION}"
     restart: unless-stopped
     env_file: .env
@@ -10,52 +10,42 @@ services:
       timeout: 5s
       retries: 3
     volumes:
-      - "$APP_DIR:$ROOT_DIR"
-      - "$APP_DIR:/var/opt/app"
+      - "./api:/var/www/html"
+      - "./api:/var/opt/app"
       - $HOME/.ssh:/home/niwee/.ssh
-    working_dir: $ROOT_DIR
+    working_dir: /var/www/html
     tty: true
 
-  caddy:
-    image: "registry.byniwee.cloud/caddy:latest"
-    restart: unless-stopped
-    env_file: .env
-    healthcheck:
-      test: ["CMD", "caddy", "version"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      app:
-        condition: service_started
-    links:
-      - "app"
-    volumes_from:
-      - "app"
-    volumes:
-      - "./config/caddy/Caddyfile:/etc/caddy/Caddyfile"
+  nginx:
+    image: nginx:latest
     ports:
       - 80:80
       - 443:443
-    tty: true
+      - 443:443/udp
+    restart: "unless-stopped"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 2s
+      timeout: 3s
+      retries: 50
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./api:/var/www/html
+      - ./log:/var/log/nginx
+
 
   node:
     image: "node:18"
     restart: unless-stopped
     command: ["/bin/bash", "-c", "yarn install && yarn run dev"]
     env_file: .env
-    healthcheck:
-      test: ["CMD", "node", "-v"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      app:
-        condition: service_started
-    links:
-      - "app"
+    ports:
+      - 3000:3000
     volumes:
-      - "$APP_DIR/frontend:/app"
+      - "./:/app"
     working_dir: /app
     tty: true
 

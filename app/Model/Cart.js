@@ -1,5 +1,6 @@
 import Coupon from "./Coupon";
 import Cookies from "js-cookie";
+import Api from "./Api";
 
 export default class Cart {
   constructor() {
@@ -9,6 +10,7 @@ export default class Cart {
       coupon: null,
     };
     this.load();
+    this.api = Api;
   }
 
   clear() {
@@ -67,35 +69,15 @@ export default class Cart {
   }
 
   add(item) {
-    return new Promise((resolve, reject) => {
-      if (this.isInCart(item.item)) {
-        this.cart.items = this.cart.items.map((i) => {
-          if (i.item.id === item.item.id) {
-            i.quantity++;
-            item.item.quantity = i.quantity;
-          }
-          return i;
-        });
-
-        const itemPrice = parseFloat(item.item.price);
-        this.cart.total = parseFloat(this.cart.total) + parseFloat(itemPrice);
-      } else {
-        const itemToAdd = {
-          item: item.item,
-          quantity: 1,
-          price: item.item.price,
-        };
-
-        this.cart.items.push(itemToAdd);
-        this.cart.total =
-          parseFloat(this.cart.total) + parseFloat(itemToAdd.price);
-      }
-
-      this.save();
-      setTimeout(() => {
-        resolve();
-      }, 700);
-    });
+    return this.api
+      .post("/cart/add", item)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   count() {

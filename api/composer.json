@@ -1,0 +1,18 @@
+{
+    "name": "nicolasboyer/koupon",
+    "autoload": {
+        "psr-4": {
+            "Koupon\\Api\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nicolas Boyer",
+            "email": "nicolas@niwee.fr"
+        }
+    ],
+    "require": {
+        "bramus/router": "^1.6",
+        "filp/whoops": "^2.15"
+    }
+}

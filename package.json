@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "ci:test": "vitest run"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "animate.css": "^4.1.1",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
@@ -22,11 +25,14 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
     "react-modal": "^3.16.1",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1",
     "tailwindcss": "3.3.2"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/ui": "^0.31.0",
     "daisyui": "^2.51.6",
     "js-cookie": "^3.0.5",
     "jsdom": "^22.0.0",
