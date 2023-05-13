@@ -4,6 +4,7 @@ CHANGELOG
 [2023-05-13]
 
 [2023-05-11]
+ * 💡feat(#EventSourcing): Implemented Cart event sourcing on add.
  * 💡feat(#Cart): API now saves & returns cart contents
 
 [2023-05-10]

@@ -1651,3 +1651,5 @@
 31.36.132.2 - - [13/May/2023:17:30:50 +0000] "POST /api/cart/add HTTP/1.1" 200 14 "http://163.172.191.153:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 31.36.132.2 - - [13/May/2023:17:31:03 +0000] "OPTIONS /api/cart/add HTTP/1.1" 200 5 "http://163.172.191.153:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 31.36.132.2 - - [13/May/2023:17:31:03 +0000] "POST /api/cart/add HTTP/1.1" 200 14 "http://163.172.191.153:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+31.36.132.2 - - [13/May/2023:17:33:03 +0000] "OPTIONS /api/cart/add HTTP/1.1" 200 5 "http://163.172.191.153:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+31.36.132.2 - - [13/May/2023:17:33:03 +0000] "POST /api/cart/add HTTP/1.1" 200 14 "http://163.172.191.153:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
