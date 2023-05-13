@@ -72,7 +72,9 @@ export default class Cart {
     return this.api
       .post("/cart/add", item)
       .then((response) => {
-        console.log(response);
+        if (!response.status === 200) {
+          throw new Error(response);
+        }
         return response;
       })
       .catch((error) => {

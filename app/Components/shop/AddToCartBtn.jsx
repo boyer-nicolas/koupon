@@ -45,8 +45,14 @@ export default class AddToCartBtn extends React.Component
             btnIcon: null
         });
 
-        const addToCart = () => this.cart.add({ item: this.product }).then(() =>
+        const addToCart = () => this.cart.add({ item: this.product }).then((response) =>
         {
+            if (response.status !== 200)
+            {
+                throw new Error(response.statusText);
+            }
+
+            console.log(response.data);
             const cartContents = this.cart.getContents();
 
             this.setState({
@@ -58,17 +64,11 @@ export default class AddToCartBtn extends React.Component
                         contents: `${item.quantity}x ${item.item.name} @ ${item.item.price}`
                     };
                 }),
-                cartTotal: this.cart.getTotal()
+                cartTotal: this.cart.getTotal(),
+                btnContents: "In Cart",
+                btnClass: "btn-secondary",
+                btnIcon: <BiCart size={24} />,
             });
-
-            setTimeout(() =>
-            {
-                this.setState({
-                    btnContents: "In Cart",
-                    btnClass: "btn-secondary",
-                    btnIcon: <BiCart size={24} />,
-                });
-            }, 2000);
         }
         ).catch((error) =>
         {

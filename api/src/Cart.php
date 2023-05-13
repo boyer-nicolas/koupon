@@ -6,7 +6,7 @@ use \Exception;
 
 final class Cart
 {
-    private $cart;
+    private $cart = [];
     private $session;
 
     public function __construct()
@@ -20,10 +20,11 @@ final class Cart
         }
     }
 
-    public function add($item): void
+    public function add(): void
     {
         try
         {
+            $item = json_decode(file_get_contents('php://input'), true);
             $this->cart = $this->session->get('cart');
             $this->cart[] = $item;
             $this->session->set('cart', $this->cart);

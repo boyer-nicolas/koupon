@@ -24,7 +24,7 @@ services:
       - 443:443/udp
     restart: "unless-stopped"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "nginx", "-t"]
       interval: 2s
       timeout: 3s
       retries: 50
@@ -35,19 +35,6 @@ services:
       - ./config/nginx:/etc/nginx/conf.d
       - ./api:/var/www/html
       - ./log:/var/log/nginx
-
-
-  node:
-    image: "node:18"
-    restart: unless-stopped
-    command: ["/bin/bash", "-c", "yarn install && yarn run dev"]
-    env_file: .env
-    ports:
-      - 3000:3000
-    volumes:
-      - "./:/app"
-    working_dir: /app
-    tty: true
 
   maildev:
     image: djfarrelly/maildev

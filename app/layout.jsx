@@ -7,6 +7,7 @@ export const metadata = {
   title: 'Koupon - Buy, Apply, Save.',
   description: 'Buy, Apply, Save.',
 }
+import Progress from './Components/Progress'
 
 export default function RootLayout({ children })
 {
@@ -14,6 +15,7 @@ export default function RootLayout({ children })
     <html lang="en">
       <body>
         <Drawer>
+          <Progress />
           <Navbar />
           <main id="koupon">
             {children}

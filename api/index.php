@@ -47,8 +47,7 @@ final class Index
                 $this->router->post('/cart/add', function ()
                 {
                     $cart = new Cart();
-                    $cart->add($_POST);
-                    die(json_encode($cart->all()));
+                    $cart->add();
                 });
             });
 
