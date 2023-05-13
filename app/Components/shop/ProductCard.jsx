@@ -16,9 +16,11 @@ export default function ProductCard({ product, ...props })
     });
 
     return (
-        <div className={classname("card shadow-xl", props.className)} style={props.style}>
+        <div className={classname("card shadow-xl hover-up", props.className)} style={props.style}>
             <figure>
-                <Image width={400} height={200} src={product.image} alt="Shoes" className="w-full" />
+                <Link href={product.link}>
+                    <Image width={400} height={200} src={product.image} alt="Shoes" className="w-full" />
+                </Link>
                 <span className="text-xl font-bold badge badge-primary text-white py-5 absolute right-3 top-3">
                     {product.currency === "USD" && "$"}
                     {product.price}

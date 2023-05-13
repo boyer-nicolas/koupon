@@ -6,6 +6,7 @@ require_once 'vendor/autoload.php';
 
 use Koupon\Api\Router;
 use Koupon\Api\Cart;
+use Koupon\Api\Response;
 use \Exception;
 use Whoops\Handler\Handler;
 
@@ -46,8 +47,16 @@ final class Index
 
                 $this->router->post('/cart/add', function ()
                 {
-                    $cart = new Cart();
-                    $cart->add();
+                    try
+                    {
+                        $cart = new Cart();
+                        Response::json($cart->add());
+                    }
+                    catch (Exception $e)
+                    {
+                        Log::console($e->getMessage(), "error", $e);
+                        Response::json(['error' => $e->getMessage()]);
+                    }
                 });
             });
 
