@@ -6,6 +6,7 @@ require_once 'vendor/autoload.php';
 
 use Koupon\Api\Router;
 use Koupon\Api\Cart;
+use Koupon\Api\CartItem;
 use Koupon\Api\Response;
 use \Exception;
 use Whoops\Handler\Handler;
@@ -16,15 +17,32 @@ final class Index
     private $whoops;
     public function __construct()
     {
+        ini_set('session.save_path', '/tmp');
+
         try
         {
-            // disable xdebug
+            if (isset($_SERVER['HTTP_ORIGIN']))
+            {
+                // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
+                // you want to allow, and if so:
+                header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+                header('Access-Control-Allow-Credentials: true');
+                header('Access-Control-Max-Age: 86400');    // cache for 1 day
+            }
 
-            // Handle cors
-            header('Access-Control-Allow-Origin: *');
-            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-            Log::console($_SERVER['REQUEST_METHOD'] . " " . $_SERVER['REQUEST_URI'], "info");
+            // Access-Control headers are received during OPTIONS requests
+            if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+            {
+
+                if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+                    // may also be using PUT, PATCH, HEAD etc
+                    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+                if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+                    header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+                exit(0);
+            }
 
             $whoops = new \Whoops\Run;
             $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
@@ -42,28 +60,36 @@ final class Index
             {
                 $this->router->get('/', function ()
                 {
-                    echo 'Hello World';
+                    Response::json(['message' => 'Welcome to Koupon API']);
                 });
 
-                $this->router->post('/cart/add', function ()
+                $this->router->mount('/cart', function ()
                 {
-                    try
+                    $cart = new Cart(session_id(), 0, []);
+                    $this->router->post('/add', function () use ($cart)
                     {
-                        $cart = new Cart();
-                        Response::json($cart->add());
-                    }
-                    catch (Exception $e)
-                    {
-                        Log::console($e->getMessage(), "error", $e);
-                        Response::json(['error' => $e->getMessage()]);
-                    }
-                });
-            });
+                        try
+                        {
+                            $data = json_decode(file_get_contents('php://input'), true);
+                            $cart->addItem(new CartItem(
+                                $data['id'],
+                                $data['title'],
+                                $data['price'],
+                                $data['quantity']
+                            ));
 
-            $this->router->set404(function ()
-            {
-                header('HTTP/1.1 404 Not Found');
-                die(json_encode(['error' => '404 Not Found']));
+                            Response::json([
+                                'message' => 'Item added to cart',
+                                'cart' => $cart
+                            ]);
+                        }
+                        catch (Exception $e)
+                        {
+                            Log::console($e->getMessage(), "error", $e);
+                            Response::json(['error' => $e->getMessage()]);
+                        }
+                    });
+                });
             });
 
             $this->router->run();

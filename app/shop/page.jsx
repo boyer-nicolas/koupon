@@ -1,5 +1,4 @@
 import ProductCard from "../Components/shop/ProductCard";
-import ClearCart from "../Components/shop/ClearCart";
 
 export default function Shop()
 {
@@ -13,8 +12,9 @@ export default function Shop()
                 "link": "/shop/shoes/1",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
             },
             {
                 "id": 2,
@@ -24,8 +24,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 3,
@@ -35,8 +37,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 4,
@@ -46,8 +50,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 5,
@@ -57,8 +63,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 6,
@@ -68,8 +76,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 7,
@@ -79,8 +89,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 8,
@@ -90,8 +102,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
             {
                 "id": 9,
@@ -101,8 +115,10 @@ export default function Shop()
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
                 "price": "99.99",
-                "currency": "USD",
-                "new": true
+                "currency": "EUR",
+                "new": true,
+                "quantity": 1
+
             },
         ]
     }
@@ -110,9 +126,9 @@ export default function Shop()
     return (
         <div className="flex container mx-auto py-20 px-5">
             <div className="w-[30%] lg:mr-10 hidden xl:block">
-                <div className="card bg-base-100 shadow-xl p-5 h-full">
+                <div className="card bg-base-100 shadow-xl p-5">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="font-bold">Sidebar w/filters</h2>
+                        <h2 className="font-bold mr-5">Sidebar w/filters</h2>
                         <button className="btn btn-primary btn-sm">Clear</button>
                     </div>
                     <form>
@@ -167,7 +183,7 @@ export default function Shop()
                 <div className="flex items-center justify-between mb-5">
                     <h2 className="font-bold text-xl">All products</h2>
                     {/* For quick development purposes */}
-                    <ClearCart />
+                    {/* <ClearCart /> */}
                     <form>
                         <select className="select w-full max-w-xs outline outline-2 outline-gray-200">
                             <option disabled defaultValue>Sort by</option>

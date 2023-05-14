@@ -5,3 +5,7 @@
         transform: translateY(-5px);
     }
 }
+
+body {
+    background-image: radial-gradient(#ddd 1px, transparent 0), radial-gradient(#ddd 1px, transparent 0);
+}

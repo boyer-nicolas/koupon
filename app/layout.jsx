@@ -17,7 +17,7 @@ export default function RootLayout({ children })
         <Drawer>
           <Progress />
           <Navbar />
-          <main id="koupon">
+          <main id="koupon pt-50">
             {children}
           </main>
           <Footer />

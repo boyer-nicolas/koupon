@@ -3,38 +3,58 @@
 namespace Koupon\Api;
 
 use \Exception;
-use Koupon\Api\CartChange;
+use Koupon\Api\Log;
+use \DateTimeImmutable;
 
 final class Cart
 {
-    private $cart = [];
+    private string $id;
+    private float $total;
+    private array $items = [];
 
-    public function __construct()
+    public function __construct(string $id, float $total, array $items)
     {
-        if (!isset($this->cart))
-        {
-            $this->cart = [];
-        }
+        $this->id = $id;
+        $this->total = $total;
+        $this->items = $items;
     }
 
-    public function add()
+    public function getId(): string
     {
-        try
-        {
-            $items = json_decode(file_get_contents('php://input'), true);
-
-            return [new CartChange($items, $this->cart)];
-        }
-        catch (Exception $e)
-        {
-            throw new Exception($e->getMessage());
-        }
+        return $this->id;
     }
 
-    public function onAdd(CartChange $event)
+    public function getTotal(): float
     {
-        $this->cart = $event->getCart();
+        return $this->total;
+    }
 
-        return $this->cart;
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function addItem(CartItem $item): void
+    {
+        Log::console("Adding item to cart" . json_encode($item), "info");
+        $this->items[] = $item;
+    }
+
+    public function removeItem(string $itemId): void
+    {
+        $this->items = array_filter($this->items, function (CartItem $item) use ($itemId)
+        {
+            return $item->getId() !== $itemId;
+        });
+    }
+
+    public function applyCoupon(Coupon $coupon): void
+    {
+        $this->total -= $coupon->getValue();
+    }
+
+    public function removeCoupon(Coupon $coupon): void
+    {
+        $this->total += $coupon->getValue();
     }
 }

@@ -1,5 +1,4 @@
 import Coupon from "./Coupon";
-import Cookies from "js-cookie";
 import Api from "./Api";
 
 export default class Cart {
@@ -9,7 +8,6 @@ export default class Cart {
       items: [],
       coupon: null,
     };
-    this.load();
     this.api = Api;
   }
 
@@ -23,32 +21,8 @@ export default class Cart {
     this.save();
   }
 
-  save() {
-    Cookies.set("cart", JSON.stringify(this.cart));
-    console.log("Cart saved");
-    console.log(this.cart);
-    console.dir(this.cart.items);
-  }
-
-  init() {
-    Cookies.set("cart", JSON.stringify(this.cart));
-  }
-
   getContents() {
     return this.cart.items;
-  }
-
-  load() {
-    // load cart from localstorage
-    Cookies.get("cart") || this.init();
-    const cart = Cookies.get("cart");
-
-    if (!cart) {
-      this.init();
-      return;
-    }
-
-    this.cart = JSON.parse(cart);
   }
 
   getTotal() {
@@ -78,12 +52,12 @@ export default class Cart {
         return response;
       })
       .catch((error) => {
+        console.error(error);
         throw new Error(error);
       });
   }
 
   count() {
-    console.log(this.cart.items.length);
     return this.cart.items.length;
   }
 }

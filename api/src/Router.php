@@ -10,7 +10,13 @@ final class Router
     private $bramus;
     public function __construct()
     {
+        session_start();
         $this->bramus = new BramusRouter();
+        $this->bramus->set404(function ()
+        {
+            header('HTTP/1.1 404 Not Found');
+            die(json_encode(['error' => '404 Not Found']));
+        });
     }
 
     public function getRouter()

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Cart from "../../Model/Cart";
-import { BiCartAdd, BiCheck, BiErrorCircle, BiCart } from "react-icons/bi";
+import { BiCartAdd, BiErrorCircle, BiCart } from "react-icons/bi";
 import toast from 'react-hot-toast';
 import Modal from 'react-modal';
 
@@ -45,43 +45,35 @@ export default class AddToCartBtn extends React.Component
             btnIcon: null
         });
 
-        const addToCart = () => this.cart.add({ item: this.product }).then((response) =>
+        const cartPromise = async () =>
         {
-            if (response.status !== 200)
+            const response = await this.cart.add(this.product);
+            if (response.status !== 200 || response.data.error)
             {
-                throw new Error(response.statusText);
+                response.data.error && console.error(response.data.error);
+                this.setState({ btnContents: "Error", btnClass: "btn-error" });
+                setTimeout(() => this.setState({
+                    btnContents: "Add to Cart",
+                    btnClass: "btn-primary",
+                    btnIcon: <BiErrorCircle size={24} />
+                }), 2000);
+                throw new Error(response.data.error);
             }
 
-            console.log(response.data);
-            const cartContents = this.cart.getContents();
+            console.table(response.data.cart);
+
 
             this.setState({
-                modalIsOpen: true,
-                cartContents: cartContents.map((item) =>
-                {
-                    return {
-                        id: item.item.id,
-                        contents: `${item.quantity}x ${item.item.name} @ ${item.item.price}`
-                    };
-                }),
+                modalIsOpen: false,
+                cartContents: response.data.cart,
                 cartTotal: this.cart.getTotal(),
                 btnContents: "In Cart",
                 btnClass: "btn-secondary",
                 btnIcon: <BiCart size={24} />,
             });
         }
-        ).catch((error) =>
-        {
-            console.error(error);
-            this.setState({ btnContents: "Error", btnClass: "btn-error" });
-            setTimeout(() => this.setState({
-                btnContents: "Add to Cart",
-                btnClass: "btn-primary",
-                btnIcon: <BiErrorCircle size={24} />
-            }), 2000);
-        });
 
-        toast.promise(addToCart(), {
+        toast.promise(cartPromise(), {
             loading: 'Adding to cart...',
             success: <b>Added to cart!</b>,
             error: <b>Could not add to cart.</b>,
@@ -103,7 +95,7 @@ export default class AddToCartBtn extends React.Component
                     <label className="modal-box relative animate__animated animate__fadeInUp animate__fast">
                         <h3 className="text-lg font-bold">Cart Results</h3>
                         <ul>
-                            {this.state.cartContents.map((item) =>
+                            {this.state.cartContents && this.state.cartContents.length > 0 && this.state.cartContents.map((item) =>
                             {
                                 <li key={item.id}>
                                     {item.contents}

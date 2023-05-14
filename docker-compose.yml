@@ -4,6 +4,7 @@ services:
     image: "registry.byniwee.cloud/php:${PHP_VERSION}"
     restart: unless-stopped
     env_file: .env
+    user: niwee
     healthcheck:
       test: ["CMD", "php", "-v"]
       interval: 10s
@@ -16,8 +17,26 @@ services:
     working_dir: /var/www/html
     tty: true
 
+  certbot:
+    build: ./docker/certbot
+    depends_on:
+      - nextjs
+    volumes:
+      - ./config/ssl:/root/ssl
+
+  nextjs:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 3000:3000
+    
   nginx:
     image: nginx:latest
+    depends_on:
+      certbot:
+        condition: service_completed_successfully
     ports:
       - 80:80
       - 443:443
@@ -35,6 +54,7 @@ services:
       - ./config/nginx:/etc/nginx/conf.d
       - ./api:/var/www/html
       - ./log:/var/log/nginx
+      - ./config/ssl:/etc/nginx/ssl
 
   maildev:
     image: djfarrelly/maildev
