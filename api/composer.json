@@ -14,5 +14,16 @@
     "require": {
         "bramus/router": "^1.6",
         "filp/whoops": "^2.15"
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.6"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

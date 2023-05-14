@@ -1,7 +1,10 @@
 CHANGELOG
 ----------------------
 
+[2023-05-14]
+
 [2023-05-13]
+ * 💡feat(#Backend): Improved EventSourcing && removed session storage
 
 [2023-05-11]
  * 💡feat(#hooks): Added build on push
