@@ -7,10 +7,10 @@ use Koupon\Api\Log;
 
 final class CartItem
 {
-    private string $id;
-    private string $name;
-    private float $price;
-    private int $quantity;
+    public string $id;
+    public string $name;
+    public float $price;
+    public int $quantity;
 
     public function __construct(string $id, string $name, float $price, int $quantity)
     {
@@ -18,8 +18,6 @@ final class CartItem
         $this->name = $name;
         $this->price = $price;
         $this->quantity = $quantity;
-
-        Log::console("Created new cart item: " . json_encode($this), "info");
     }
 
     public function getId(): string

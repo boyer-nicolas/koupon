@@ -10,13 +10,14 @@ final class Cart
 {
     private string $id;
     private float $total;
-    private array $items = [];
+    private array $items;
 
-    public function __construct(string $id, float $total, array $items)
+    public $cart;
+
+    public function __construct()
     {
-        $this->id = $id;
-        $this->total = $total;
-        $this->items = $items;
+        $this->id = session_id();
+        $this->total = 0.0;
     }
 
     public function getId(): string
@@ -38,6 +39,22 @@ final class Cart
     {
         Log::console("Adding item to cart" . json_encode($item), "info");
         $this->items[] = $item;
+        $this->onAddItem($item);
+    }
+
+    private function onAddItem(CartItem $item): void
+    {
+        $this->total += $item->getPrice() * $item->getQuantity();
+
+        $this->cart = [
+            "id" => $this->getId(),
+            "total" => $this->getTotal(),
+            "items" => $this->getItems(),
+            "created_at" => (new DateTimeImmutable())->format("Y-m-d H:i:s"),
+            "updated_at" => (new DateTimeImmutable())->format("Y-m-d H:i:s")
+        ];
+
+        Log::console("Cart" . json_encode($this->cart), "info");
     }
 
     public function removeItem(string $itemId): void

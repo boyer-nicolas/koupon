@@ -9,7 +9,7 @@ final class CartHandler
     private Cart $cart;
     public function __construct()
     {
-        $this->cart = new Cart('1', 0, []);
+        $this->cart = new Cart();
     }
 
     public function getCart(): Cart
