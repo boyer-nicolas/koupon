@@ -19,7 +19,7 @@ final class Cart
     {
         $this->id = session_id();
         $this->total = 0.0;
-        $this->coupon = new Coupon(1, "FIRST20", 0.1, 1, new DateTimeImmutable(), new DateTimeImmutable());
+        $this->coupon = new Coupon(1, "FIRST20", 0.2, 1, new DateTimeImmutable(), new DateTimeImmutable());
     }
 
     public function getId(): string
@@ -29,7 +29,15 @@ final class Cart
 
     public function getTotal(): float
     {
-        return $this->total;
+        $items = $this->getItems();
+        $total = 0.0;
+        foreach ($items as $cartItem)
+        {
+            $total += $cartItem->getPrice() * $cartItem->getQuantity();
+        }
+        $total = round($total, 2);
+
+        return $total;
     }
 
     public function get(): array
@@ -39,14 +47,14 @@ final class Cart
 
     public function addCoupon(string $code): void
     {
-        if ($code !== $this->coupon->getCode())
-        {
-            throw new Exception("Invalid coupon code");
-        }
+        $this->validateCoupon($code);
 
-        $this->applyCoupon($this->coupon);
+        $this->coupon->applyToCart($this);
+    }
 
-        $_SESSION['cart']['coupon'] = $this->coupon;
+    private function validateCoupon(string $code): bool
+    {
+        return $this->coupon->validate($code, $this);
     }
 
     public function getItems(): array
@@ -74,34 +82,85 @@ final class Cart
         $this->onAddItem($item);
     }
 
-    private function onAddItem(CartItem $item): void
+    private function onAddItem(): void
     {
-        $currentTotal = $_SESSION['cart']['total'] ?? 0.0;
-        $amountToAdd = floatval($item->getPrice()) * $item->getQuantity();
-        $result = round($currentTotal += $amountToAdd, 2);
-
         $_SESSION['cart'] = [
             "id" => $this->getId(),
-            "total" => $result,
+            "total" => $this->getTotal(),
             "items" => $this->getItems(),
-            "created_at" => (new DateTimeImmutable())->format("Y-m-d H:i:s"),
-            "updated_at" => (new DateTimeImmutable())->format("Y-m-d H:i:s")
+            "created_at" => $this->getCreationDate(),
+            "updated_at" => $this->getUpdateDate(),
+            "reduction" => $this->getReduction(),
+            "timesCouponApplied" => $this->getTimesCouponApplied(),
         ];
-
-        Log::console("Cart" . json_encode($_SESSION['cart']), "info");
     }
 
-    public function removeItem(string $itemId): void
+    private function onRemoveItem(): void
     {
-        $_SESSION['cart']['items'] = array_filter($_SESSION['cart']['items'], function (CartItem $item) use ($itemId)
+        $_SESSION['cart'] = [
+            "id" => $this->getId(),
+            "total" => $this->getTotal(),
+            "items" => $this->getItems(),
+            "created_at" => $this->getCreationDate(),
+            "updated_at" => $this->getUpdateDate(),
+            "reduction" => $this->getReduction(),
+            "timesCouponApplied" => $this->getTimesCouponApplied(),
+        ];
+    }
+
+    private function getCreationDate(): string
+    {
+        return $_SESSION['cart']['created_at'] ?? $this->setCreationDate(new DateTimeImmutable());
+    }
+
+    private function getUpdateDate(): string
+    {
+        return $_SESSION['cart']['updated_at'] ?? $this->setUpdateDate(new DateTimeImmutable());
+    }
+
+    private function setCreationDate(DateTimeImmutable $date): void
+    {
+        $_SESSION['cart']['created_at'] = (new DateTimeImmutable())->format("Y-m-d H:i:s");
+    }
+
+    private function setUpdateDate(DateTimeImmutable $date): void
+    {
+        $_SESSION['cart']['updated_at'] = (new DateTimeImmutable())->format("Y-m-d H:i:s");
+    }
+
+    public function getTimesCouponApplied(): int
+    {
+        return $_SESSION['cart']['timesCouponApplied'] ?? 0;
+    }
+
+    public function setTimesCouponApplied(int $timesCouponApplied): void
+    {
+        $_SESSION['cart']['timesCouponApplied'] = $timesCouponApplied;
+    }
+
+    public function setReduction(float $reduction): void
+    {
+        $_SESSION['cart']['reduction'] = $reduction;
+    }
+
+    public function getReduction(): float
+    {
+        return $_SESSION['cart']['reduction'] ?? 0.0;
+    }
+
+    public function removeItem(CartItem $item): void
+    {
+        $_SESSION['cart']['items'] = array_filter($_SESSION['cart']['items'], function ($cartItem) use ($item)
         {
-            return $item->getId() !== $itemId;
+            return $cartItem->getId() !== $item->getId();
         });
+
+        $this->onRemoveItem($item);
     }
 
     public function applyCoupon(Coupon $coupon): void
     {
-        $this->total -= $coupon->getValue();
+        $this->setReduction($coupon->getValue());
     }
 
     public function removeCoupon(Coupon $coupon): void

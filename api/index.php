@@ -144,6 +144,41 @@ final class Index
                             Response::json(['error' => $e->getMessage()]);
                         }
                     });
+
+                    $this->router->post('/remove', function () use ($cart)
+                    {
+                        try
+                        {
+                            $data = json_decode(file_get_contents('php://input'), true);
+                            $id = Filters::validateInt($data['id']);
+                            $title = Filters::validateString($data['name']);
+                            $price = Filters::validateFloat($data['price']);
+                            $quantity = Filters::validateInt($data['quantity']);
+                            $link = Filters::validateString($data['link']);
+                            $tags = Filters::validateArray($data['tags']);
+                            $image = Filters::validateString($data['image']);
+
+                            $cart->removeItem(new CartItem(
+                                $id,
+                                $title,
+                                $price,
+                                $quantity,
+                                $link,
+                                $tags,
+                                $image
+                            ));
+
+                            Response::json([
+                                'message' => 'Item removed from cart',
+                                'cart' => $cart->getItems()
+                            ]);
+                        }
+                        catch (Exception $e)
+                        {
+                            Log::console($e->getMessage(), "error", $e);
+                            Response::json(['error' => $e->getMessage()]);
+                        }
+                    });
                 });
             });
 

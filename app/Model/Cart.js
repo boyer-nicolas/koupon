@@ -81,4 +81,19 @@ export default class Cart {
       return contents.data.cart.items.length;
     });
   }
+
+  removeItem(item) {
+    return this.api
+      .post("/cart/remove", item)
+      .then((response) => {
+        if (!response.status === 200) {
+          throw new Error(response);
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error(error);
+      });
+  }
 }

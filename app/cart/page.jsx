@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
 import Cart from "../Model/Cart";
+import toast from 'react-hot-toast';
 
 export default class CartPage extends React.Component
 {
@@ -13,64 +14,121 @@ export default class CartPage extends React.Component
         this.cart = new Cart();
         this.state = {
             cart: [],
-            loading: true
+            loading: true,
+            coupon: '',
+            items: []
         };
+    }
 
+    componentDidMount()
+    {
+        this.updateItems();
+    }
+
+    updateItems()
+    {
+        this.setState({ loading: true });
         this.cart.getContents().then((contents) =>
         {
-            this.setState({ cart: contents.data.cart, loading: false });
+            const cartItems = contents.data.cart.items;
+            const items = Object.entries(cartItems).map(([key, value]) =>
+            {
+                return value;
+            });
+
+            this.setState({
+                cart: contents.data.cart,
+                loading: false,
+                items: items
+            });
         });
     }
 
     applyCoupon(e)
     {
         e.preventDefault();
-        let coupon = e.target.value;
-        console.log(coupon);
 
-        this.cart.applyCoupon(coupon).then((contents) =>
+        const couponPromise = async () =>
         {
-            this.setState({ cart: contents.data.cart, loading: false });
+            return this.cart.applyCoupon(this.state.coupon).then((data) =>
+            {
+                if (data.data.error)
+                {
+                    const form = document.getElementById('coupon-form');
+                    const message = form.querySelector('.form-validation-message');
+                    message.innerHTML = data.data.error;
+                    throw new Error(data.data.error);
+                }
+                else
+                {
+                    const form = document.getElementById('coupon-form');
+                    const message = form.querySelector('.form-validation-message');
+                    message.innerHTML = '';
+                }
+
+                return this.updateItems();
+                // this.setState({ cart: contents.data.cart, loading: false });
+            });
+        }
+
+        toast.promise(couponPromise(), {
+            loading: 'Applying coupon...',
+            success: <b>Coupon applied!</b>,
+            error: <b>Could not apply coupon.</b>,
+        });
+
+
+    }
+
+    removeItem(item)
+    {
+        const removePromise = async () =>
+        {
+            return this.cart.removeItem(item).then((result) =>
+            {
+                return this.updateItems();
+            });
+        }
+
+        toast.promise(removePromise(), {
+            loading: 'Removing item...',
+            success: <b>Item removed!</b>,
+            error: <b>Could not remove item.</b>,
         });
     }
 
     render()
     {
         return (
-            <div className="hero min-h-screen bg-base-100">
-                <div className="hero-content text-center">
+            <div className="bg-base-100 container mx-auto my-20">
+                <div className="text-start">
                     <div className="">
                         <section className="mb-3">
                             <h1 className="text-5xl font-bold">Cart</h1>
                         </section>
                         <section className="mb-3">
-                            <form className="max-w-sm mx-auto flex">
-                                <input type="text" placeholder="Do you have a coupon code ?" className="input input-bordered w-full max-w-xs" />
-                                <button className="btn btn-primary" onClick={(e) => this.applyCoupon(e)}>Apply</button>
-                            </form>
-                        </section>
-                        <section className="mb-3">
-                            <div className="overflow-x-auto w-full">
-                                {this.state.cart && this.state.cart.items && this.state.cart.items.length > 0 && (
-                                    <table className="table w-full">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <label>
-                                                        <input type="checkbox" className="checkbox" />
-                                                    </label>
-                                                </th>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.cart && this.state.cart.items && this.state.cart.items.length > 0 && this.state.cart.items.map((item, index) =>
-                                            {
-                                                return (
-                                                    <>
+                            <div className="overflow-x-auto w-full shadow-lg rounded-lg">
+                                {this.state.items.length > 0 && (
+                                    <>
+                                        <table className="table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <label>
+                                                            <input type="checkbox" className="checkbox" />
+                                                        </label>
+                                                    </th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                    <th>Total Price</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.cart && this.state.items && this.state.items.length > 0 && this.state.items.map((item, index) =>
+                                                {
+                                                    return (
                                                         <tr key={index}>
                                                             <th>
                                                                 <label>
@@ -87,12 +145,14 @@ export default class CartPage extends React.Component
                                                                     <div>
                                                                         <div className="font-bold flex flex-col">
                                                                             {item.name}
-                                                                            {item.tags.map((tag, index) =>
-                                                                            {
-                                                                                return (
-                                                                                    <span key={index} className="badge badge-outline badge-accent">{tag}</span>
-                                                                                )
-                                                                            })}
+                                                                            <span className="flex">
+                                                                                {item.tags.map((tag, index) =>
+                                                                                {
+                                                                                    return (
+                                                                                        <span key={index} className="badge badge-outline badge-accent mr-1">{tag}</span>
+                                                                                    )
+                                                                                })}
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -101,39 +161,67 @@ export default class CartPage extends React.Component
                                                                 {item.quantity}
                                                             </td>
                                                             <td>
-                                                                {item.price}
+                                                                {item.price}€
+                                                            </td>
+                                                            <td>
+                                                                {Math.round(item.price * item.quantity * 100) / 100}€
                                                             </td>
                                                             <th>
                                                                 <Link href={item.link} className="btn btn-primary btn-xs">details</Link>
-                                                                <button className="btn btn-error btn-xs">remove</button>
+                                                                <button className="btn btn-error btn-xs" onClick={() => this.removeItem(item)}>remove</button>
                                                             </th>
                                                         </tr>
-                                                    </>
-                                                )
-                                            })}
-                                        </tbody >
-                                    </table >
-                                )}
-                            </div >
-                            {(!this.state.cart || this.state.cart.length === 0) &&
-                                <>
-                                    {!this.state.loading && (
-                                        <div className="shadow-lg w-full bg-base-100 p-10 mx-auto rounded-lg">
-                                            <h2 className="card-title">Your cart is empty</h2>
-                                            <Link href="/shop" className="btn btn-primary">
-                                                Browse our products
-                                            </Link>
+                                                    )
+                                                })}
+                                                {/* Total */}
+                                                <tr>
+                                                    <th></th>
+                                                    <th>
+                                                        <div className="font-bold flex flex-col">
+                                                            <span>Total</span>
+                                                            <span className="text-sm text-gray-500">Tax included.</span>
+                                                        </div>
+                                                    </th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>
+                                                        {this.state.cart && this.state.cart.total && this.state.cart.total}€
+                                                    </th>
+                                                </tr>
+                                            </tbody >
+                                        </table >
+                                        <div className="flex justify-between p-10">
+                                            <form className="max-w-xs flex" onSubmit={(e) => this.applyCoupon(e)} id="coupon-form">
+                                                <div>
+                                                    <input type="text" placeholder="Enter coupon code" className="input input-bordered w-full max-w-xs" value={this.state.coupon} onChange={(e) => this.setState({ coupon: e.target.value })} />
+                                                    <p className="text-xs text-red-500 form-validation-message mt-3"></p>
+                                                </div>
+                                                <button className="btn btn-primary">Apply</button>
+                                            </form>
+                                            <button href="/checkout" className="btn btn-primary">Checkout</button>
                                         </div>
-                                    )}
-                                </>
-                            }
+                                    </>
+                                )}
+                                {this.state.loading && (
+                                    <div className="w-full p-10">
+                                        <h2 className="card-title">Loading...</h2>
+                                    </div>
+                                )}
+                                {(!this.state.cart || this.state.items.length === 0) &&
+                                    <>
+                                        {!this.state.loading && (
+                                            <div className="w-full mx-auto p-10">
+                                                <h2 className="card-title">Your cart is empty</h2>
+                                                <Link href="/shop" className="btn btn-primary">
+                                                    Browse our products
+                                                </Link>
+                                            </div>
+                                        )}
+                                    </>
+                                }
+                            </div >
 
-                            {this.state.loading && (
-                                <div className="shadow-lg w-full bg-base-100 p-10 mx-auto rounded-lg">
-                                    <h2 className="card-title">Loading...</h2>
-                                </div>
-
-                            )}
                         </section>
                     </div>
                 </div>

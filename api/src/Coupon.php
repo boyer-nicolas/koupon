@@ -67,6 +67,41 @@ class Coupon
         $cart->applyCoupon($this);
     }
 
+    public function validate(string $code, Cart $cart)
+    {
+        if ($code !== $this->getCode())
+        {
+            throw new Exception("Invalid coupon code");
+        }
+
+        if ($this->isRevoked())
+        {
+            throw new Exception("Coupon has been revoked");
+        }
+
+        if ($this->getValidFrom() > new DateTimeImmutable())
+        {
+            throw new Exception("Coupon is not valid yet");
+        }
+
+        if ($this->getValidUntil() < new DateTimeImmutable())
+        {
+            throw new Exception("Coupon has expired");
+        }
+
+        if ($this->getTimesApplied($cart) >= $this->getMaxUses())
+        {
+            throw new Exception("Coupon has been used too many times");
+        }
+
+        return true;
+    }
+
+    public function getTimesApplied(Cart $cart): int
+    {
+        return $cart->getTimesCouponApplied($this);
+    }
+
     public function revoke(): void
     {
         $this->revoked = true;
