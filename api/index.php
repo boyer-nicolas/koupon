@@ -8,6 +8,7 @@ use Koupon\Api\Router;
 use Koupon\Api\Cart;
 use Koupon\Api\CartItem;
 use Koupon\Api\Response;
+use Koupon\Api\Products;
 use \Exception;
 use Whoops\Handler\Handler;
 
@@ -18,6 +19,12 @@ final class Index
     public function __construct()
     {
         ini_set('session.save_path', '/tmp');
+        ini_set('session.gc_probability', 1);
+        ini_set('session.gc_divisor', 1);
+        ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
+        ini_set('session.cookie_secure', false);
+        session_id('koupon');
+        session_start();
 
         try
         {
@@ -65,22 +72,70 @@ final class Index
 
                 $this->router->mount('/cart', function ()
                 {
-                    $cart = new Cart(session_id(), 0, []);
+                    $cart = new Cart();
+
+                    $this->router->get('/', function () use ($cart)
+                    {
+                        try
+                        {
+                            Response::json([
+                                'cart' => $cart->get()
+                            ]);
+                        }
+                        catch (Exception $e)
+                        {
+                            Log::console($e->getMessage(), "error", $e);
+                            Response::json(['error' => $e->getMessage()]);
+                        }
+                    });
+
+                    $this->router->post('/coupon', function () use ($cart)
+                    {
+                        try
+                        {
+                            $data = json_decode(file_get_contents('php://input'), true);
+                            $code = Filters::validateString($data['code']);
+
+                            $cart->addCoupon($code);
+
+                            Response::json([
+                                'message' => 'Coupon added to cart',
+                                'cart' => $cart->get()
+                            ]);
+                        }
+                        catch (Exception $e)
+                        {
+                            Log::console($e->getMessage(), "error", $e);
+                            Response::json(['error' => $e->getMessage()]);
+                        }
+                    });
+
                     $this->router->post('/add', function () use ($cart)
                     {
                         try
                         {
                             $data = json_decode(file_get_contents('php://input'), true);
+                            $id = Filters::validateInt($data['id']);
+                            $title = Filters::validateString($data['title']);
+                            $price = Filters::validateFloat($data['price']);
+                            $quantity = Filters::validateInt($data['quantity']);
+                            $link = Filters::validateString($data['link']);
+                            $tags = Filters::validateArray($data['tags']);
+                            $image = Filters::validateString($data['image']);
+
                             $cart->addItem(new CartItem(
-                                $data['id'],
-                                $data['title'],
-                                $data['price'],
-                                $data['quantity']
+                                $id,
+                                $title,
+                                $price,
+                                $quantity,
+                                $link,
+                                $tags,
+                                $image
                             ));
 
                             Response::json([
                                 'message' => 'Item added to cart',
-                                'cart' => $cart
+                                'cart' => $cart->getItems()
                             ]);
                         }
                         catch (Exception $e)

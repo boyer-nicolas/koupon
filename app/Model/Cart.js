@@ -1,4 +1,3 @@
-import Coupon from "./Coupon";
 import Api from "./Api";
 
 export default class Cart {
@@ -12,7 +11,6 @@ export default class Cart {
   }
 
   clear() {
-    console.log("Clearing cart");
     this.cart = {
       total: 0,
       items: [],
@@ -22,23 +20,44 @@ export default class Cart {
   }
 
   getContents() {
-    return this.cart.items;
+    return this.api
+      .get("/cart/")
+      .then((response) => {
+        if (!response.status === 200) {
+          throw new Error(response);
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error(error);
+      });
   }
 
   getTotal() {
-    return this.cart.total;
+    return this.getContents().then((contents) => {
+      return contents.data.cart.total;
+    });
   }
 
   applyCoupon(coupon) {
-    if (Coupon.isCouponValid(coupon, this.getTotal())) {
-      this.cart.coupon = coupon;
-    }
-
-    this.save();
+    return this.api
+      .post("/cart/coupon", {
+        code: coupon,
+      })
+      .then((response) => {
+        if (!response.status === 200) {
+          throw new Error(response);
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error(error);
+      });
   }
 
   isInCart(item) {
-    console.log("Checking if item is in cart");
     return this.cart.items.find((i) => i.item.id === item.id);
   }
 
@@ -58,6 +77,8 @@ export default class Cart {
   }
 
   count() {
-    return this.cart.items.length;
+    return this.getContents().then((contents) => {
+      return contents.data.cart.items.length;
+    });
   }
 }

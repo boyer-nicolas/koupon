@@ -10,7 +10,6 @@ final class Router
     private $bramus;
     public function __construct()
     {
-        session_start();
         $this->bramus = new BramusRouter();
         $this->bramus->set404(function ()
         {

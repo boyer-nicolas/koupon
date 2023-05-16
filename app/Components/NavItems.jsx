@@ -18,6 +18,13 @@ export default function NavItems()
                     </label>
                 </Link>
             </li>
+            <li>
+                <Link href="/cart">
+                    <label htmlFor="app-drawer">
+                        Cart
+                    </label>
+                </Link>
+            </li>
         </>
     );
 }

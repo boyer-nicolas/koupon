@@ -1,5 +1,5 @@
 import ProductCard from "../Components/shop/ProductCard";
-
+import Products from "../Model/Products";
 export default function Shop()
 {
     const products = {

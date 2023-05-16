@@ -1,0 +1,137 @@
+{
+    "shoe1": {
+        "id": 1,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/1",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe2": {
+        "id": 2,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe3": {
+        "id": 3,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe4": {
+        "id": 4,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe5": {
+        "id": 5,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe6": {
+        "id": 6,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe7": {
+        "id": 7,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe8": {
+        "id": 8,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    },
+    "shoe9": {
+        "id": 9,
+        "title": "Shoes",
+        "description": "If a dog chews shoes whose shoes does he choose?",
+        "image": "/images/products/shoe.jpg",
+        "link": "/shop/shoes/2",
+        "tags": [
+            "Fashion",
+            "Products"
+        ],
+        "price": "99.99",
+        "currency": "EUR",
+        "new": true,
+        "quantity": 1
+    }
+}

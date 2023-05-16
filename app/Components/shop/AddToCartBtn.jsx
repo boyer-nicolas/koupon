@@ -60,9 +60,6 @@ export default class AddToCartBtn extends React.Component
                 throw new Error(response.data.error);
             }
 
-            console.table(response.data.cart);
-
-
             this.setState({
                 modalIsOpen: false,
                 cartContents: response.data.cart,
