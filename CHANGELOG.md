@@ -4,6 +4,7 @@ CHANGELOG
 [2023-05-17]
 
 [2023-05-16]
+ * 💡feat(#Coupon): Can now apply, calculate price & remove
  * 💡feat(#Coupon): Now displaying reduction
  * 💡feat(#backend): Add to cart now works seamlessly
 

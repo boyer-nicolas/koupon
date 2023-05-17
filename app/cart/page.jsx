@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from 'react';
 import Cart from "../Model/Cart";
 import toast from 'react-hot-toast';
+import CartLoader from "../Components/cart/CartLoader";
 
 export default class CartPage extends React.Component
 {
@@ -256,9 +257,7 @@ export default class CartPage extends React.Component
                                     </>
                                 )}
                                 {this.state.loading && (
-                                    <div className="w-full p-10">
-                                        <h2 className="card-title">Loading...</h2>
-                                    </div>
+                                    <CartLoader />
                                 )}
                                 {(!this.state.cart || this.state.items.length === 0) &&
                                     <>

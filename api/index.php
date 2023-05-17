@@ -32,7 +32,15 @@ final class Index
             {
                 // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
                 // you want to allow, and if so:
-                header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+                $http_origin = $_SERVER['HTTP_ORIGIN'];
+                $allowedOrigins = [
+                    "163.172.191.153",
+                    "koupon.vercel.app"
+                ];
+                if (!in_array($http_origin, $allowedOrigins))
+                {
+                    header("Access-Control-Allow-Origin: $http_origin");
+                }
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Max-Age: 86400');    // cache for 1 day
             }
