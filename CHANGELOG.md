@@ -4,6 +4,8 @@ CHANGELOG
 [2023-05-17]
 
 [2023-05-16]
+ * feature(#ci) Added build & test commands
+ * 💡feat(#Tests): Added shop & cart render test
  * 💡feat(#Coupon): Behavior is now as expected
  * 💡feat(#Cart): Added nice loader
  * 💡feat(#Coupon): Can now apply, calculate price & remove
