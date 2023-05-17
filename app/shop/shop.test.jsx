@@ -10,12 +10,21 @@ describe('Shop', () =>
         render(<Shop />);
     });
 
-    test('toast appears when add to cart button is clicked', () =>
+    test('add to cart button exists', () =>
     {
         render(<Shop />);
 
         const addToCartBtn = screen.getAllByText('Add to Cart');
-        addToCartBtn.map((btn) => btn.click());
+        let i = 0;
+        addToCartBtn.map((btn) =>
+        {
+            btn.click();
+            i++;
+            if (i > 1)
+            {
+                return;
+            }
+        });
     });
 }
 );

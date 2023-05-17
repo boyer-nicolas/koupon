@@ -37,8 +37,6 @@ export default class CartPage extends React.Component
                 return value;
             });
 
-            console.log(contents.data.cart);
-
             this.setState({
                 cart: contents.data.cart,
                 loading: false,

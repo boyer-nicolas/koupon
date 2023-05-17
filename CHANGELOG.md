@@ -4,6 +4,7 @@ CHANGELOG
 [2023-05-17]
 
 [2023-05-16]
+ * 💡feat(#Coupon): Behavior is now as expected
  * 💡feat(#Cart): Added nice loader
  * 💡feat(#Coupon): Can now apply, calculate price & remove
  * 💡feat(#Coupon): Now displaying reduction
@@ -44,4 +45,3 @@ CHANGELOG
 
 [2023-04-23]
  * 📖 docs(#Readme): Added base (description, getting started, automations)
- * 🪚 refactor(#router): Now mounting auth if not authenticated, not mounting the rest of the api for security reasons
