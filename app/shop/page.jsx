@@ -1,5 +1,4 @@
 import ProductCard from "../Components/shop/ProductCard";
-import Products from "../Model/Products";
 export default function Shop()
 {
     const products = {
@@ -11,7 +10,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/1",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "29.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -23,7 +22,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "39.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -36,7 +35,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "19.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -49,7 +48,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "9.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -62,7 +61,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "59.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -101,7 +100,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "19.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1
@@ -114,7 +113,7 @@ export default function Shop()
                 "image": "/images/products/shoe.jpg",
                 "link": "/shop/shoes/2",
                 "tags": ["Fashion", "Products"],
-                "price": "99.99",
+                "price": "39.99",
                 "currency": "EUR",
                 "new": true,
                 "quantity": 1

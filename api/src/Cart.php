@@ -19,25 +19,14 @@ final class Cart
     {
         $this->id = session_id();
         $this->total = 0.0;
-        $this->coupon = new Coupon(1, "FIRST20", 0.2, 1, new DateTimeImmutable(), new DateTimeImmutable());
+        $dateTimePlusTwoMonths = new DateTimeImmutable();
+        $dateTimePlusTwoMonths->modify("+2 months");
+        $this->coupon = new Coupon(1, "FIRST20", 0.2, 1, new DateTimeImmutable(), $dateTimePlusTwoMonths, 50.00);
     }
 
     public function getId(): string
     {
         return $this->id;
-    }
-
-    public function getTotal(): float
-    {
-        $items = $this->getItems();
-        $total = 0.0;
-        foreach ($items as $cartItem)
-        {
-            $total += $cartItem->getPrice() * $cartItem->getQuantity();
-        }
-        $total = round($total, 2);
-
-        return $total;
     }
 
     public function get(): array
@@ -65,47 +54,74 @@ final class Cart
     public function addItem(CartItem $item): void
     {
         // Check if item already exists in cart$
-        if (isset($_SESSION['cart']['items']))
-        {
-            foreach ($_SESSION['cart']['items'] as $cartItem)
-            {
-                if ($cartItem->getId() === $item->getId())
-                {
+        if (isset($_SESSION['cart']['items'])) {
+            foreach ($_SESSION['cart']['items'] as $cartItem) {
+                if ($cartItem->getId() === $item->getId()) {
                     $cartItem->setQuantity($cartItem->getQuantity() + $item->getQuantity());
 
-                    $this->onAddItem($cartItem);
+                    $this->onAddItem();
                     return;
                 }
             }
         }
         $_SESSION['cart']['items'][] = $item;
-        $this->onAddItem($item);
+        $this->onAddItem();
     }
 
     private function onAddItem(): void
     {
-        $_SESSION['cart'] = [
-            "id" => $this->getId(),
-            "total" => $this->getTotal(),
-            "items" => $this->getItems(),
-            "created_at" => $this->getCreationDate(),
-            "updated_at" => $this->getUpdateDate(),
-            "reduction" => $this->getReduction(),
-            "timesCouponApplied" => $this->getTimesCouponApplied(),
-        ];
+        $this->calculateCart();
     }
 
     private function onRemoveItem(): void
     {
+        $this->calculateCart();
+    }
+
+    private function onApplyCoupon(): void
+    {
+        $this->calculateCart();
+        if ($this->getTotal() === 0.00) {
+            $this->removeCoupon($this->coupon);
+        }
+    }
+
+    private function calculateCart()
+    {
         $_SESSION['cart'] = [
             "id" => $this->getId(),
-            "total" => $this->getTotal(),
+            "total" => $this->getTotal(true),
+            "initialTotal" => $this->getTotal(false),
             "items" => $this->getItems(),
             "created_at" => $this->getCreationDate(),
             "updated_at" => $this->getUpdateDate(),
             "reduction" => $this->getReduction(),
+            "recuctionAmount" => $this->getReductionAmount(),
             "timesCouponApplied" => $this->getTimesCouponApplied(),
         ];
+    }
+
+    public function getTotal(bool $withReduction = false): float
+    {
+        $items = $this->getItems();
+        $total = 0.0;
+        foreach ($items as $cartItem) {
+            $total += $cartItem->getPrice() * $cartItem->getQuantity();
+        }
+
+        if ($withReduction) {
+            $total = $total * $this->getReduction();
+        }
+
+        $total = round($total, 2, PHP_ROUND_HALF_UP);
+        Log::console("Total: $total");
+
+        return $total;
+    }
+
+    public function getReductionAmount(): float
+    {
+        return $this->getTotal(false) - $this->getTotal(true);
     }
 
     private function getCreationDate(): string
@@ -150,17 +166,18 @@ final class Cart
 
     public function removeItem(CartItem $item): void
     {
-        $_SESSION['cart']['items'] = array_filter($_SESSION['cart']['items'], function ($cartItem) use ($item)
-        {
+        $_SESSION['cart']['items'] = array_filter($_SESSION['cart']['items'], function ($cartItem) use ($item) {
             return $cartItem->getId() !== $item->getId();
         });
 
-        $this->onRemoveItem($item);
+        $this->onRemoveItem();
     }
 
     public function applyCoupon(Coupon $coupon): void
     {
         $this->setReduction($coupon->getValue());
+
+        $this->onApplyCoupon();
     }
 
     public function removeCoupon(Coupon $coupon): void

@@ -15,16 +15,58 @@ class Coupon
     private DateTimeImmutable $validFrom;
     private DateTimeImmutable $validUntil;
     private bool $revoked;
+    private float $minimumAmount;
 
-    public function __construct(string $id, string $code, float $value, int $maxUses, DateTimeImmutable $validFrom, DateTimeImmutable $validUntil, bool $revoked = false)
+    public function __construct(string $id, string $code, float $value, int $maxUses, DateTimeImmutable $validFrom, DateTimeImmutable $validUntil, float $minimumAmount, bool $revoked = false)
+    {
+        $this->setId($id);
+        $this->setCode($code);
+        $this->setValue($value);
+        $this->setMaxUses($maxUses);
+        $this->setValidFrom($validFrom);
+        $this->setValidUntil($validUntil);
+        $this->setMinimumAmount($minimumAmount);
+        $this->setRevoked($revoked);
+    }
+
+    public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function setCode(string $code): void
+    {
         $this->code = $code;
+    }
+
+    public function setValue(float $value): void
+    {
         $this->value = $value;
+    }
+
+    public function setMaxUses(int $maxUses): void
+    {
         $this->maxUses = $maxUses;
+    }
+
+    public function setValidFrom(DateTimeImmutable $validFrom): void
+    {
         $this->validFrom = $validFrom;
+    }
+
+    public function setValidUntil(DateTimeImmutable $validUntil): void
+    {
         $this->validUntil = $validUntil;
+    }
+
+    public function setRevoked(bool $revoked): void
+    {
         $this->revoked = $revoked;
+    }
+
+    public function getRevoked(): bool
+    {
+        return $this->revoked;
     }
 
     public function getId(): string
@@ -67,39 +109,49 @@ class Coupon
         $cart->applyCoupon($this);
     }
 
+    public function getMinimumAmount(): float
+    {
+        return $this->minimumAmount;
+    }
+
+    public function setMinimumAmount(float $minimumAmount): void
+    {
+        $this->minimumAmount = $minimumAmount;
+    }
+
     public function validate(string $code, Cart $cart)
     {
-        if ($code !== $this->getCode())
-        {
+        if ($code !== $this->getCode()) {
             throw new Exception("Invalid coupon code");
         }
 
-        if ($this->isRevoked())
-        {
+        if ($this->isRevoked()) {
             throw new Exception("Coupon has been revoked");
         }
 
-        if ($this->getValidFrom() > new DateTimeImmutable())
-        {
+        if ($this->getTimesApplied($cart) >= $this->getMaxUses()) {
+            throw new Exception("Coupon has been used too many times");
+        }
+
+        if ($this->getMinimumAmount() > $cart->getTotal()) {
+            throw new Exception("Add for more than " . $this->getMinimumAmount() . "€ to use this coupon.");
+        }
+
+        if ($this->getValidFrom() > new DateTimeImmutable()) {
             throw new Exception("Coupon is not valid yet");
         }
 
-        if ($this->getValidUntil() < new DateTimeImmutable())
-        {
-            throw new Exception("Coupon has expired");
-        }
-
-        if ($this->getTimesApplied($cart) >= $this->getMaxUses())
-        {
-            throw new Exception("Coupon has been used too many times");
-        }
+        // if ($this->getValidUntil() < new DateTimeImmutable()) {
+        //     Log::console("Coupon valid until: " . $this->getValidUntil()->format("Y-m-d H:i:s"));
+        //     throw new Exception("Coupon has expired");
+        // }
 
         return true;
     }
 
     public function getTimesApplied(Cart $cart): int
     {
-        return $cart->getTimesCouponApplied($this);
+        return $cart->getTimesCouponApplied();
     }
 
     public function revoke(): void

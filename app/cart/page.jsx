@@ -36,6 +36,8 @@ export default class CartPage extends React.Component
                 return value;
             });
 
+            console.log(contents.data.cart);
+
             this.setState({
                 cart: contents.data.cart,
                 loading: false,
@@ -174,6 +176,20 @@ export default class CartPage extends React.Component
                                                     )
                                                 })}
                                                 {/* Total */}
+                                                <tr>
+                                                    <th></th>
+                                                    <th>
+                                                        <div className="font-bold flex flex-col">
+                                                            <span className="text-sm text-gray-500">Coupon: {this.state.cart.coupon && this.state.cart.coupon}</span>
+                                                        </div>
+                                                    </th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>
+                                                        {this.state.cart && this.state.cart.initialTotal && this.state.cart.initialTotal}€
+                                                    </th>
+                                                </tr>
                                                 <tr>
                                                     <th></th>
                                                     <th>
