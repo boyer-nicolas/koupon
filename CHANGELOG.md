@@ -4,11 +4,12 @@ CHANGELOG
 [2023-05-17]
 
 [2023-05-16]
+ * 💡feat(#Cart): Added nice loader
  * 💡feat(#Coupon): Can now apply, calculate price & remove
  * 💡feat(#Coupon): Now displaying reduction
- * 💡feat(#backend): Add to cart now works seamlessly
 
 [2023-05-15]
+ * 💡feat(#backend): Add to cart now works seamlessly
  * 💡feat(#Cart): Can now add items & sum totCoupon basic features are implemented
  * 💡feat(#Backend): Clarified cart class with code aeration
 
@@ -17,23 +18,23 @@ CHANGELOG
  * 💡feat(#Backend): Improved EventSourcing && removed session storage
 
 [2023-05-13]
- * 💡feat(#hooks): Added build on push
- * 💡feat(#EventSourcing): Implemented Cart event sourcing on add.
 
 [2023-05-11]
+ * 💡feat(#hooks): Added build on push
+ * 💡feat(#EventSourcing): Implemented Cart event sourcing on add.
  * 💡feat(#Cart): API now saves & returns cart contents
- * 💡feat(#backend): Readded a refactored (simplified) PHP API
 
 [2023-05-10]
+ * 💡feat(#backend): Readded a refactored (simplified) PHP API
  * 💡feat(#testing): Implemented the first working tests
  * 💡feat(#layout): Fixed footer folder location
  * 💡feat(#addToCart): Added modal upon cart addition for UX & betdebugging
+
+[2023-05-01]
  * 💡feat(#hooks): Added build & test on post commit
  * 🪚 refactor(#backend): Removed from this repo to separate and use next w/vercel + php w/deployer
  * 💡feat(#tests): Implemented vitest + shop test & toasts
  * 💡feat(#content): Added cart/shop pages + cart/coupon methods
-
-[2023-05-01]
  * 🪚 refactor(#nextjs): Switched to new app directory && added sass preprocessoer
 
 [2023-04-29]

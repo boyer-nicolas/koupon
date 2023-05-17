@@ -1,5 +1,5 @@
-{
-    "shoe1": {
+[
+    {
         "id": 1,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -9,12 +9,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "29.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe2": {
+    {
         "id": 2,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -24,12 +24,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "39.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe3": {
+    {
         "id": 3,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -39,12 +39,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "19.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe4": {
+    {
         "id": 4,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -54,12 +54,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "9.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe5": {
+    {
         "id": 5,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -69,12 +69,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "59.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe6": {
+    {
         "id": 6,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -89,7 +89,7 @@
         "new": true,
         "quantity": 1
     },
-    "shoe7": {
+    {
         "id": 7,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -104,7 +104,7 @@
         "new": true,
         "quantity": 1
     },
-    "shoe8": {
+    {
         "id": 8,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -114,12 +114,12 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "19.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     },
-    "shoe9": {
+    {
         "id": 9,
         "title": "Shoes",
         "description": "If a dog chews shoes whose shoes does he choose?",
@@ -129,9 +129,9 @@
             "Fashion",
             "Products"
         ],
-        "price": "99.99",
+        "price": "39.99",
         "currency": "EUR",
         "new": true,
         "quantity": 1
     }
-}
+]

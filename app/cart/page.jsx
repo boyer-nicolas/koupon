@@ -120,7 +120,7 @@ export default class CartPage extends React.Component
     render()
     {
         return (
-            <div className="bg-base-100 container mx-auto my-20">
+            <div className="bg-base-100 container mx-auto my-20 px-5">
                 <div className="text-start">
                     <div className="">
                         <section className="mb-3">
@@ -244,8 +244,8 @@ export default class CartPage extends React.Component
                                                 </tr>
                                             </tbody >
                                         </table >
-                                        <div className="flex justify-between p-10">
-                                            <form className="max-w-xs flex" onSubmit={(e) => this.applyCoupon(e)} id="coupon-form">
+                                        <div className="flex flex-col md:flex-row justify-between p-10">
+                                            <form className="max-w-xs flex mx-auto md:mr-auto md:ml-0" onSubmit={(e) => this.applyCoupon(e)} id="coupon-form">
                                                 <div>
                                                     <input type="text" placeholder="Enter coupon code" className="input input-bordered w-full max-w-xs" value={this.state.coupon} onChange={(e) => this.setState({ coupon: e.target.value })} />
                                                     <p className="text-xs text-red-500 form-validation-message mt-3"></p>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-  baseURL: "http://163.172.191.153/api",
+  baseURL: "https://dev.salokain.com/api",
   timeout: 1000,
   headers: {
     "Content-Type": "application/json",

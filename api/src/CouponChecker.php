@@ -3,10 +3,9 @@
 namespace Koupon\Api;
 
 use \Exception;
-use Koupon\Api\Log;
 use \DateTimeImmutable;
 
-final class Coupon
+final class CouponChecker
 {
     private string $id;
     private string $code;
@@ -19,18 +18,18 @@ final class Coupon
     private string $discountType;
     private float $discountAmount;
 
-    public function __construct(string $id, string $code, float $value, int $maxUses, DateTimeImmutable $validFrom, DateTimeImmutable $validUntil, float $minimumAmount, string $discountType, float $discountAmount, bool $revoked = false)
+    public function __construct(Coupon $coupon)
     {
-        $this->setId($id);
-        $this->setCode($code);
-        $this->setValue($value);
-        $this->setMaxUses($maxUses);
-        $this->setValidFrom($validFrom);
-        $this->setValidUntil($validUntil);
-        $this->setMinimumAmount($minimumAmount);
-        $this->setRevoked($revoked);
-        $this->setDiscountType($discountType);
-        $this->setDiscountAmount($discountAmount);
+        $this->setId($coupon->getId());
+        $this->setCode($coupon->getCode());
+        $this->setValue($coupon->getValue());
+        $this->setMaxUses($coupon->getMaxUses());
+        $this->setValidFrom($coupon->getValidFrom());
+        $this->setValidUntil($coupon->getValidUntil());
+        $this->setMinimumAmount($coupon->getMinimumAmount());
+        $this->setRevoked($coupon->getRevoked());
+        $this->setDiscountType($coupon->getDiscountType());
+        $this->setDiscountAmount($coupon->getDiscountAmount());
         $_SESSION['coupons'][$this->getId()] = $this;
     }
 
@@ -154,9 +153,9 @@ final class Coupon
         return $this->revoked;
     }
 
-    public function applyToCart(Cart $cart): void
+    public function applyToCart(Cart $cart, Coupon $coupon): void
     {
-        $cart->applyCoupon($this);
+        $cart->applyCoupon($coupon);
     }
 
     public function getMinimumAmount(): float

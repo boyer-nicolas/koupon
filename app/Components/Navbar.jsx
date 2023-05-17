@@ -11,7 +11,7 @@ export default function Navbar()
     return (
         <>
             <div className="w-full bg-base-100 container mx-auto bg-base-100 z-50">
-                <div className="navbar w-full text-center">
+                <div className="p-5 w-full text-center">
                     <p className='mx-auto font-bold'>
                         Limited time offer: Get 20% off on your first order with code <span className='text-primary ml-1'>FIRST20</span>
                     </p>
