@@ -34,6 +34,21 @@ export default class Cart {
       });
   }
 
+  removeDiscount() {
+    return this.api
+      .post("/cart/coupon/remove")
+      .then((response) => {
+        if (!response.status === 200) {
+          throw new Error(response);
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error(error);
+      });
+  }
+
   getTotal() {
     return this.getContents().then((contents) => {
       return contents.data.cart.total;
@@ -42,7 +57,7 @@ export default class Cart {
 
   applyCoupon(coupon) {
     return this.api
-      .post("/cart/coupon", {
+      .post("/cart/coupon/add", {
         code: coupon,
       })
       .then((response) => {

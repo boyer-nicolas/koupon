@@ -4,7 +4,7 @@ export default function Footer()
 {
 
     return (
-        <div className="w-full flex items-center justify-center bg-base-200">
+        <div className="w-full flex flex-col items-center justify-center bg-base-100">
             <footer className="footer p-10 text-base-content container">
                 <div>
                     <span className="footer-title">Services</span>
@@ -39,6 +39,11 @@ export default function Footer()
                     </div>
                 </div>
             </footer>
+            <section className="copyright">
+                <div className="flex-col items-center justify-center pt-10 pb-10 text-center">
+                    <p>© {new Date().getFullYear()} <a href="https://nicolasboyer.dev" target="_blank">Nicolas Boyer</a> - All rights reserved.</p>
+                </div>
+            </section>
         </div>
     );
 }

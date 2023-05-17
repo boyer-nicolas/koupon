@@ -16,8 +16,10 @@ class Coupon
     private DateTimeImmutable $validUntil;
     private bool $revoked;
     private float $minimumAmount;
+    private string $discountType;
+    private float $discountAmount;
 
-    public function __construct(string $id, string $code, float $value, int $maxUses, DateTimeImmutable $validFrom, DateTimeImmutable $validUntil, float $minimumAmount, bool $revoked = false)
+    public function __construct(string $id, string $code, float $value, int $maxUses, DateTimeImmutable $validFrom, DateTimeImmutable $validUntil, float $minimumAmount, string $discountType, float $discountAmount, bool $revoked = false)
     {
         $this->setId($id);
         $this->setCode($code);
@@ -27,6 +29,13 @@ class Coupon
         $this->setValidUntil($validUntil);
         $this->setMinimumAmount($minimumAmount);
         $this->setRevoked($revoked);
+        $this->setDiscountType($discountType);
+        $this->setDiscountAmount($discountAmount);
+        $_SESSION['coupons'][$this->getId()] = $this;
+    }
+
+    public function getCoupon() {
+        return $_SESSION['coupons'][$this->getId()];
     }
 
     public function setId(string $id): void
@@ -59,6 +68,26 @@ class Coupon
         $this->validUntil = $validUntil;
     }
 
+    public function wasApplied()
+    {
+        return $this->getTimesApplied() > 0;
+    }
+
+    public function getTimesApplied(): int
+    {
+        return $_SESSION['coupons'][$this->getId()]->timesApplied ?? 0;
+    }
+
+    public function incrementTimesApplied(): void
+    {
+        $this->setTimesApplied($this->getTimesApplied() + 1);
+    }
+
+    public function setTimesApplied(int $timesApplied): void
+    {
+        $_SESSION['coupons'][$this->getId()]->timesApplied = $timesApplied;
+    }
+
     public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
@@ -67,6 +96,26 @@ class Coupon
     public function getRevoked(): bool
     {
         return $this->revoked;
+    }
+
+    public function getDiscountType(): string
+    {
+        return $this->discountType;
+    }
+
+    public function getDiscountAmount(): float
+    {
+        return $this->discountAmount;
+    }
+
+    public function setDiscountType(string $discountType): void
+    {
+        $this->discountType = $discountType;
+    }
+
+    public function setDiscountAmount(float $discountAmount): void
+    {
+        $this->discountAmount = $discountAmount;
     }
 
     public function getId(): string
@@ -129,7 +178,7 @@ class Coupon
             throw new Exception("Coupon has been revoked");
         }
 
-        if ($this->getTimesApplied($cart) >= $this->getMaxUses()) {
+        if ($this->getTimesApplied() >= $this->getMaxUses()) {
             throw new Exception("Coupon has been used too many times");
         }
 
@@ -147,11 +196,6 @@ class Coupon
         // }
 
         return true;
-    }
-
-    public function getTimesApplied(Cart $cart): int
-    {
-        return $cart->getTimesCouponApplied();
     }
 
     public function revoke(): void

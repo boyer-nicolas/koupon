@@ -99,6 +99,23 @@ export default class CartPage extends React.Component
         });
     }
 
+    removeDiscount()
+    {
+        const removePromise = async () =>
+        {
+            return this.cart.removeDiscount().then((result) =>
+            {
+                return this.updateItems();
+            });
+        }
+
+        toast.promise(removePromise(), {
+            loading: 'Removing discount...',
+            success: <b>Discount removed!</b>,
+            error: <b>Could not remove discount.</b>,
+        });
+    }
+
     render()
     {
         return (
@@ -109,6 +126,27 @@ export default class CartPage extends React.Component
                             <h1 className="text-5xl font-bold">Cart</h1>
                         </section>
                         <section className="mb-3">
+                            {this.state.cart && this.state.cart.hasCoupon && (
+                                <div className="my-10 p-10 shadow-lg rounded-lg bg-primary text-white flex justify-around">
+
+                                    <div className="font-bold">
+                                        <span className="text-sm text-white-500">Coupon: </span>
+                                        <span className="badge badge-success">
+                                            {this.state.cart.coupon && this.state.cart.coupon.code}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span className="text-sm text-white-500">Discount amount: </span>
+                                        <span className="badge badge-success">
+                                            -{this.state.cart && this.state.cart.coupon && this.state.cart.coupon.discountAmount}%
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <button className="btn btn-xs" onClick={() => this.removeDiscount()}>remove</button>
+                                    </div>
+
+                                </div>
+                            )}
                             <div className="overflow-x-auto w-full shadow-lg rounded-lg">
                                 {this.state.items.length > 0 && (
                                     <>
@@ -180,30 +218,28 @@ export default class CartPage extends React.Component
                                                     <th></th>
                                                     <th>
                                                         <div className="font-bold flex flex-col">
-                                                            <span className="text-sm text-gray-500">Coupon: {this.state.cart.coupon && this.state.cart.coupon}</span>
-                                                        </div>
-                                                    </th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th>
-                                                        {this.state.cart && this.state.cart.initialTotal && this.state.cart.initialTotal}€
-                                                    </th>
-                                                </tr>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>
-                                                        <div className="font-bold flex flex-col">
                                                             <span>Total</span>
                                                             <span className="text-sm text-gray-500">Tax included.</span>
                                                         </div>
                                                     </th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th></th>
                                                     <th>
-                                                        {this.state.cart && this.state.cart.total && this.state.cart.total}€
+                                                        {this.state.cart && this.state.cart.hasCoupon && (
+                                                            <span className="line-through mr-1 text-gray-400">
+                                                                {this.state.cart && this.state.cart.total && this.state.cart.initialTotal}€
+                                                            </span>
+                                                        )}
+                                                        <span>
+                                                            {this.state.cart && this.state.cart.total && this.state.cart.total}€
+                                                        </span>
+                                                        {this.state.cart && this.state.cart.hasCoupon && (
+                                                            <span className="badge badge-success ml-1">
+                                                                -{this.state.cart && this.state.cart.recuctionAmount && this.state.cart.recuctionAmount}€
+                                                            </span>
+                                                        )}
                                                     </th>
+                                                    <th></th>
                                                 </tr>
                                             </tbody >
                                         </table >

@@ -1,7 +1,10 @@
 CHANGELOG
 ----------------------
 
+[2023-05-17]
+
 [2023-05-16]
+ * 💡feat(#Coupon): Now displaying reduction
  * 💡feat(#backend): Add to cart now works seamlessly
 
 [2023-05-15]
@@ -15,9 +18,9 @@ CHANGELOG
 [2023-05-13]
  * 💡feat(#hooks): Added build on push
  * 💡feat(#EventSourcing): Implemented Cart event sourcing on add.
- * 💡feat(#Cart): API now saves & returns cart contents
 
 [2023-05-11]
+ * 💡feat(#Cart): API now saves & returns cart contents
  * 💡feat(#backend): Readded a refactored (simplified) PHP API
 
 [2023-05-10]
@@ -36,10 +39,7 @@ CHANGELOG
  * 💡feat(#scripts): Added bin folder & jwt generator (work in progress)
 
 [2023-04-24]
- * 📖 docs(#Readme): Added base (description, getting started, automations)
 
 [2023-04-23]
+ * 📖 docs(#Readme): Added base (description, getting started, automations)
  * 🪚 refactor(#router): Now mounting auth if not authenticated, not mounting the rest of the api for security reasons
- * 💡feat(#JWT): Now checking JWT validity & sending 401 on wrong credentials
- * Added Readme Name
- * First commit

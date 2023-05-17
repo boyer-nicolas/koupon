@@ -89,25 +89,46 @@ final class Index
                         }
                     });
 
-                    $this->router->post('/coupon', function () use ($cart)
+                    $this->router->mount('/coupon', function () use ($cart)
                     {
-                        try
+                        $this->router->post('/add', function () use ($cart)
                         {
-                            $data = json_decode(file_get_contents('php://input'), true);
-                            $code = Filters::validateString($data['code']);
+                            try
+                            {
+                                $data = json_decode(file_get_contents('php://input'), true);
+                                $code = Filters::validateString($data['code']);
 
-                            $cart->addCoupon($code);
+                                $cart->addCoupon($code);
 
-                            Response::json([
-                                'message' => 'Coupon added to cart',
-                                'cart' => $cart->get()
-                            ]);
-                        }
-                        catch (Exception $e)
+                                Response::json([
+                                    'message' => 'Coupon added to cart',
+                                    'cart' => $cart->get()
+                                ]);
+                            }
+                            catch (Exception $e)
+                            {
+                                Log::console($e->getMessage(), "error", $e);
+                                Response::json(['error' => $e->getMessage()]);
+                            }
+                        });
+
+                        $this->router->post('/remove', function () use ($cart)
                         {
-                            Log::console($e->getMessage(), "error", $e);
-                            Response::json(['error' => $e->getMessage()]);
-                        }
+                            try
+                            {
+                                $cart->removeCoupon();
+
+                                Response::json([
+                                    'message' => 'Coupon removed from cart',
+                                    'cart' => $cart->get()
+                                ]);
+                            }
+                            catch (Exception $e)
+                            {
+                                Log::console($e->getMessage(), "error", $e);
+                                Response::json(['error' => $e->getMessage()]);
+                            }
+                        });
                     });
 
                     $this->router->post('/add', function () use ($cart)
