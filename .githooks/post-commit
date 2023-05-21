@@ -1,3 +1,11 @@
 #!/bin/bash
 
+stackIsUp() {
+    docker compose ps | grep -q "Up"
+}
+
 yarn build
+
+if stackIsUp; then
+    docker compose restart
+fi

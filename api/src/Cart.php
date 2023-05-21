@@ -82,7 +82,7 @@ final class Cart
         }
     }
 
-    public function setCoupon(Coupon $coupon)
+    public function setCoupon(mixed $coupon)
     {
         $this->coupon = $coupon;
         $_SESSION['cart']['coupon'] = $coupon;
@@ -334,14 +334,16 @@ final class Cart
         return $_SESSION['cart']['updated_at'] ?? $this->setUpdateDate(new DateTimeImmutable());
     }
 
-    private function setCreationDate(DateTimeImmutable $date): void
+    private function setCreationDate(DateTimeImmutable $date): string
     {
         $_SESSION['cart']['created_at'] = (new DateTimeImmutable())->format("Y-m-d H:i:s");
+        return $_SESSION['cart']['created_at'];
     }
 
-    private function setUpdateDate(DateTimeImmutable $date): void
+    private function setUpdateDate(DateTimeImmutable $date): string
     {
         $_SESSION['cart']['updated_at'] = (new DateTimeImmutable())->format("Y-m-d H:i:s");
+        return $_SESSION['cart']['updated_at'];
     }
 
     public function getTimesCouponApplied(): int
